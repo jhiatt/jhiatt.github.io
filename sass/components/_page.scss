@@ -1,7 +1,46 @@
-.info-parent {
-  display: flex;
+//created by me (not part of Materialize)
+html {
+  scroll-behavior: smooth;
 }
 
-.info-child {
-  margin: auto;
+.page1 {
+  height: 100vh;
+  // min-width: 1024px;
+  background-image: url("../images/test.jpg") ;
+  background-repeat:no-repeat;
+  background-size:contain;
+  background-position:center;
 }
+
+.info-parent {
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  span {
+    padding: 3px;
+    // background-color: #f44b42;
+    border: 1px;
+    border-color: black;
+    border-radius: 25px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 60%;
+    margin-right: 20%;
+    width: 20%;
+    text-align: center;
+  }
+  a {
+    color: #320A71;
+  }
+}
+
+.page2 {
+  height: 100vh;
+  background-image: url("../images/duck.png") ;
+  background-repeat:no-repeat;
+  background-size:contain;
+  background-position:center;
+}
+

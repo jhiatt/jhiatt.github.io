@@ -6835,9 +6835,6 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   stroke-linecap: round;
   /*shape-rendering: crispEdges;*/ }
 
-html {
-  scroll-behavior: smooth; }
-
 .page1 {
   height: 100vh;
   background-image: url("../images/test.jpg");
@@ -6867,9 +6864,9 @@ html {
 
 .page2 {
   height: 100vh;
-  background-image: url("../images/duck.png");
+  background-image: url("../images/test.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center; }
 
-/*# sourceMappingURL=materialize.min.css.map */
+/*# sourceMappingURL=materialize.css.map */
