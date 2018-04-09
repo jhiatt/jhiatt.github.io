@@ -6867,9 +6867,13 @@ html {
 
 .page2 {
   height: 100vh;
-  background-image: url("../images/duck.png");
+  background-color: #8E0A0E;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center; }
+  .page2 .product1 {
+    width: 70%; }
+  .page2 .product1-img {
+    width: 25%; }
 
 /*# sourceMappingURL=materialize.min.css.map */
