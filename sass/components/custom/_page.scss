@@ -1,7 +1,6 @@
 //created by me (not part of Materialize)
 $points-kanban-color: #8E0A0E;
 $pocket-money-color: #0C5194;
-$background-color: #3DA9FD;
 
 .home-page {
 
@@ -12,13 +11,15 @@ $background-color: #3DA9FD;
   .whole-page {
     height: 100vh;
     background-repeat:no-repeat;
-    background-size:contain;
+    background-size:cover;
     background-position:center;
+
   }
 
   .page1 {
     // min-width: 1024px;
-    // background: $background-color url("../images/test.jpg") ;
+    background-image: url("../images/cs-background.jpg") ;
+    // background-color: #3DA9FD;
 
     .info-parent {
       height: 75vh;
