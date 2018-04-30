@@ -6835,45 +6835,57 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   stroke-linecap: round;
   /*shape-rendering: crispEdges;*/ }
 
-html {
+.home-page html {
   scroll-behavior: smooth; }
-
-.page1 {
+.home-page .whole-page {
   height: 100vh;
-  background-image: url("../images/test.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center; }
-
-.info-parent {
-  height: 75vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end; }
-  .info-parent span {
-    padding: 3px;
-    border: 1px;
-    border-color: black;
-    border-radius: 25px;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: 60%;
-    margin-right: 20%;
-    width: 20%;
-    text-align: center; }
-  .info-parent a {
-    color: #320A71; }
-
-.page2 {
-  height: 100vh;
-  background-color: #8E0A0E;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center; }
-  .page2 .product1 {
-    width: 70%; }
-  .page2 .product1-img {
-    width: 25%; }
+.home-page .page1 {
+  background-image: url("../images/test.jpg"); }
+  .home-page .page1 .info-parent {
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end; }
+    .home-page .page1 .info-parent span {
+      padding: 3px;
+      border: 1px;
+      border-color: black;
+      border-radius: 25px;
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-left: 60%;
+      margin-right: 20%;
+      width: 20%;
+      text-align: center; }
+    .home-page .page1 .info-parent a {
+      color: #320A71; }
+.home-page .portfolio .portfolio-nav button {
+  border-radius: 50%; }
+.home-page .portfolio .portfolio-body a {
+  margin: 10px; }
+.home-page .portfolio .portfolio-body .page2 {
+  background-color: #8E0A0E; }
+  .home-page .portfolio .portfolio-body .page2 .product1 {
+    width: 60%;
+    float: right; }
+  .home-page .portfolio .portfolio-body .page2 .product1-img {
+    width: 40%;
+    float: left; }
+  .home-page .portfolio .portfolio-body .page2 .next a {
+    bottom: 0%;
+    color: #320000;
+    font-size: 2em; }
+.home-page .portfolio .portfolio-body .page3 {
+  background-color: #0C5194; }
+  .home-page .portfolio .portfolio-body .page3 .product2 {
+    width: 60%;
+    float: left; }
+  .home-page .portfolio .portfolio-body .page3 .product2-img {
+    min-width: 40%;
+    float: right; }
 
 /*# sourceMappingURL=materialize.min.css.map */

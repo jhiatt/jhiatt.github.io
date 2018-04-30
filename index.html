@@ -11,8 +11,8 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
 
-    <body>
-      <div class="page1">
+    <body class="home-page">
+      <div class="page1 whole-page">
         <div class="info-parent">
           <span><a target="_blank" href="https://github.com/jhiatt">Github</a></span>
           <span><a target="_blank" href="https://www.linkedin.com/in/jordanhiatt/">LinkedIn</a></span>
@@ -20,62 +20,42 @@
           <span><a target="_blank" href="">Design Make Experiment</a></span>
           <span><a href="#page-2">Current Products</a></span>
         </div>
-        <a name="page-2">
       </div>
 
-      <div class="page2">
-        </a>
-        <img class="product1-img" src="./images/duck.png" alt="">
-        <div class="product1">  
-          <h3>Points Kanban</h3>
-          <p>  
-            There are times as a freelancer when it looks as if the 5 clients you have been courting for weeks might all work out at the same time and you just don’t have the manpower.  For some kinds of jobs, you know plenty of people looking for side projects of even just a few hours a week.  What if we had an automated system for dividing up the work and assigning value to all the deliverables that need to be completed.
-          </p>
-          <p>
-            Thats when I came up with the idea for Points Kanban, a Kanban system like Trello where a project can be divided into cards and points can be awarded for those cards completed.  If the project is completed income or ownership will be divided by the number of points held by each contributor.
-          </p>
-          <p>
-            An MVP would include:
-          </p>
-          <ul class="browser-default">
-            <li>An admin user account who would have sole ability to set point amounts and approve cards submitted for completion</li>
-            <li>Cards and columns set up like Trello</li>
-            <li>An ability for a user to claim a card</li>
-          </ul>
-          <p>
-            This is my first project with a Node.js/Express backend and a React/Redux front end on a Mongoose database.
-          </p>
+      <div class="portfolio">
+        <span class="portfolio-nav">
+        </span>
+        <span class="portfolio-body">
+          <div class="page2 whole-page">
+            <a name="page-2"></a>
+            <img class="product1-img" src="./images/duck.png" alt="">
+            <div class="product1">  
+              <h3>Points Kanban</h3>
+              <p>  
+                Want to work on a project with a group of strangers? Points Kanban is a kanban system like Trello for coordinating work on a project with any number of independent developers.  Points Kanban allocates points to cards so that the money or ownership resulting from the project can be allocated fairly among contributors. Points Kanban is coded with a Node.js/Express backend and a React/Redux front end on a Mongoose database.
+              </p>
+              <a href="./pages/points-kanban-case-study.html">Design Case Study</a>
+              <a href="https://github.com/jhiatt/pointsKanbanNode/branches">View Code</a>
+            </div>
+            <div class="next">
+              <a href="#page-3">More Projects</a>
+            </div>
+          </div>
 
-
-
-
-
-        <!-- Points Kanban Case study
-
-Basically Everything below is a hypothesis we are testing
-
-Beginning Assumptions:
-Freelancers have a hard time trusting each other
-Freelancers would work on someone else’s project with the promise of payment upon completion
-Someone or a group of people would trust a group of people working together
-
-Problem:
-No way without constant supervision and management to corral a team of freelancers
-
-Solution:
-Automate the distribution of work by assigning value to parts to complete and allowing people to choose what they will work on
-
-Follow up problems:
-How can you safeguard the amount of money allocated toward a task?
-  Use Admin authority to safeguard assigned prices
-What if the dollar amount of the project shifts over time
-  Allocate POINTS rather than dollars.  Post the conversion to dollars publicly.
-What if work isn’t up to standard?
-  Work must be approved before it is merged in.  Is there a way to link Github to Kanban so that when it is merged the user automatically gets credit and the card’s status changes? -->
-        </div>
+          <div class="page3 whole-page">
+            <a name="page-3"></a>
+            <div class="product2">
+              <h3>Pocket Money</h3>
+              <p>
+                Sometimes you don't need to make a whole budget, you just want to know how much money you can spend right now and not overdraft before payday.
+              </p>
+              <a class=""  href="./pages/pocket-money-case-study.html">Design Case Study</a>
+              <a class=""  href="https://github.com/jhiatt/pocket-money-app">View Code</a>
+            </div>
+            <img src="./images/TEST-money.jpeg" alt="" class="product2-img">
+          </div>
+        </span>
       </div>
-
-
 
 
       <!--Import jQuery before materialize.js-->
