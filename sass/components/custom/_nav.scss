@@ -21,11 +21,14 @@ nav {
   }
   a {
     color: #320000;
+    font-weight: bolder;
   }
   .nav-body {
     width: 60vw;
     a {
+      // display: flex;
       height: 100%;
+
       padding: 5px;
     }
   }
