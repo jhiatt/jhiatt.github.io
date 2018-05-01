@@ -17,29 +17,38 @@ nav {
   width: 100%;
   overflow: hidden;
   a:hover {
-    
+    background-color: white;
+  }
+  li {
+    display: inline-block;
   }
   a {
     color: #320000;
     font-weight: bolder;
+    text-align: center;
+    display: inline-block;
+    height: 100%;
+    font-size: 100%;
   }
   .nav-body {
     width: 60vw;
     a {
-      // display: flex;
-      height: 100%;
-
-      padding: 5px;
+      padding: 1em;
+      margin-left: 3em;
     }
   }
   .nav-side {
-    width: 35vw;
-
+    width: 40vw;
     float: right;
+    a {
+      padding: .25em;
+    }
   }
   img {
-    margin-right: 10px;
+    // margin-right: 10px;
     margin-top: 5px;
     margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

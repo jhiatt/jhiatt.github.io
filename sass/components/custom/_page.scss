@@ -46,6 +46,12 @@ $pocket-money-color: #0C5194;
       }
     }
   }
+
+  .my-container {
+    width: 90%;
+    margin: auto;
+  }
+
   .portfolio {
     .portfolio-nav {
       button {
@@ -55,6 +61,11 @@ $pocket-money-color: #0C5194;
     .portfolio-body {
       a {
         margin: 10px;
+      }
+      .subsection {
+        margin-top: 20%;
+        margin-bottom: 20%;
+        display: flex;
       }
       .page2 {
         background-color: $points-kanban-color;
@@ -70,8 +81,8 @@ $pocket-money-color: #0C5194;
         }
         .next {
           a {
-            // position: fixed;
-            bottom: 0%;
+            bottom: 0;
+            // position: absolute;
             color: #320000;
             font-size: 2em;
           }
