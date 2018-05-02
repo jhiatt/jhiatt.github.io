@@ -6607,6 +6607,9 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin-top: 15%;
     margin-bottom: 15%; }
 
+.hidden {
+  display: none; }
+
 .navBottom {
   bottom: 0;
   position: absolute; }
@@ -6651,9 +6654,13 @@ html {
 
 .portfolio-side-nav {
   position: fixed;
-  right: 0 !important;
-  left: auto !important;
-  z-index: 10; }
+  float: left;
+  width: 10%;
+  top: 50%;
+  right: 0;
+  height: 100%;
+  overflow-x: hidden;
+  z-index: 1; }
   .portfolio-side-nav .portfolio-selector {
     width: 1.5em;
     height: 1.5em;

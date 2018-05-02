@@ -1,6 +1,10 @@
 $main-nav-color: #455A64;
 $main-nav-text-color: #FFFFFF;
 
+.hidden {
+  display: none;
+}
+
 .navBottom {
   bottom: 0;
   position: absolute;
@@ -58,9 +62,16 @@ html {
 
 .portfolio-side-nav {
   position: fixed;
-  right: 0 !important;
-  left: auto !important;
-  z-index: 10;
+  float: left;
+  width: 10%;
+  top: 50%;
+  right: 0;
+  height: 100%;
+  overflow-x: hidden;
+  // padding-top: 20px;
+  // right: 0 !important;
+  // left: auto !important;
+  z-index: 1;
   .portfolio-selector {
     // position: fixed;
     width: 1.5em;
