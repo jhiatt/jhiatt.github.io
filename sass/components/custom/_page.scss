@@ -1,6 +1,6 @@
 //created by me (not part of Materialize)
-$points-kanban-color: #8E0A0E;
-$pocket-money-color: #0C5194;
+$points-kanban-color: #CFD8DC;
+$pocket-money-color: #607D8B;
 
 .home-page {
 
@@ -58,13 +58,18 @@ $pocket-money-color: #0C5194;
         border-radius: 50%;
       }
     }
+
+// .container {display: table; height: 100%; position:absolute; overflow: hidden;width:100%;}
+// .helper {#position: absolute; #top: 50%;display: table-cell; vertical-align: middle;}
+// .content {#position: relative; #top: -50%;margin:0 auto;width:200px;border:1px solid orange;}
+
     .portfolio-body {
       a {
         margin: 10px;
       }
       .subsection {
-        margin-top: 20%;
-        margin-bottom: 20%;
+        margin-top: 30%;
+        margin-bottom: 30%;
         display: flex;
       }
       .page2 {
@@ -76,8 +81,10 @@ $pocket-money-color: #0C5194;
           // margin-left: 30%;
         }
         .product1-img {
-          width: 40%;
+          width: 60%;
           float: left;
+          margin-top: 15%;
+          margin-bottom: 15%;
         }
         .next {
           a {
@@ -95,10 +102,14 @@ $pocket-money-color: #0C5194;
         .product2 {
           width: 60%;
           float: left;
+          display: inline-block;
         }
         .product2-img {
-          min-width: 40%;
+          width: 60%;
           float: right;
+          margin-top: 15%;
+          margin-bottom: 15%;
+          // min-width: 40%;
         }
       }
     }

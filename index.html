@@ -9,6 +9,7 @@
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <link rel="shortcut icon" href="./images/bike-favicon.ico" type="image/x-icon">
     </head>
 
     <body class="home-page">
@@ -41,43 +42,55 @@
           </span>
         </nav>
       </section>
+      <nav class="portfolio-side-nav">
+        <button class="portfolio-selector"></button>
+        <button class="portfolio-selector"></button>
+      </nav>
 
       <div class="portfolio">
         <span class="portfolio-nav">
         </span>
         <section class="portfolio-body">
-          <section class="page2 whole-page">
+          <section id="page-2" class="page2 whole-page">
             <div class="my-container">
-              <a name="page-2"></a>
+              <br>
+              <img class="product1-img" src="./images/duck.png" alt="">
               <section class="subsection">
-                <img class="product1-img" src="./images/duck.png" alt="">
-                <div class="product1">
+                <aside class="product1">
                   <h3>Points Kanban</h3>
                   <p>  
-                    Want to work on a project with a group of strangers? Points Kanban is a kanban system like Trello for coordinating work on a project with any number of independent developers.  Points Kanban allocates points to cards so that the money or ownership resulting from the project can be allocated fairly among contributors. Points Kanban is coded with a Node.js/Express backend and a React/Redux front end on a Mongoose database.
+                    A kanban system for colaboration between independent parties where the system is the moderator. Coded with a Node.js/Express backend and a React/Redux front end on a Mongoose database.
                   </p>
-                  <a href="./pages/points-kanban-case-study.html">Design Case Study</a>
-                  <a href="https://github.com/jhiatt/pointsKanbanNode/branches">View Code</a>
-                </div>
-                <div class="next">
+                  <a href="./pages/points-kanban-case-study.html">
+                    <button>Design Case Study</button>
+                  </a>
+
+                  <a href="https://github.com/jhiatt/pointsKanbanNode/branches">
+                    <button>View Code</button>
+                  </a>
+                </aside>
+
+<!--                 <div class="next">
                   <a href="#page-3">More Projects</a>
-                </div>
+                </div> -->
               </section>
             </div>
           </section>
 
-          <section class="page3 whole-page">
+          <section id="page-3" class="page3 whole-page">
             <div class="my-container">
-              <a name="page-3"></a>
-              <div class="product2">
-                <h3>Pocket Money</h3>
-                <p>
-                  Sometimes you don't need to make a whole budget, you just want to know how much money you can spend right now and not overdraft before payday.
-                </p>
-                <a class=""  href="./pages/pocket-money-case-study.html">Design Case Study</a>
-                <a class=""  href="https://github.com/jhiatt/pocket-money-app">View Code</a>
-              </div>
+              <br>
               <img src="./images/TEST-money.jpeg" alt="" class="product2-img">
+              <section class="subsection">
+                <aside class="product2">
+                  <h3>Pocket Money</h3>
+                  <p>
+                    Sometimes you don't need to make a whole budget, you just want to know how much money you can spend right now and not overdraft before payday.  Built with a Rails backend and a Vue.js front end.
+                  </p>
+                  <a class=""  href="./pages/pocket-money-case-study.html">Design Case Study</a>
+                  <a class=""  href="https://github.com/jhiatt/pocket-money-app">View Code</a>
+                </aside>
+              </section>
             </div>
           </section>
         </section>

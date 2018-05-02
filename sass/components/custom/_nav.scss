@@ -1,3 +1,6 @@
+$main-nav-color: #455A64;
+$main-nav-text-color: #FFFFFF;
+
 .navBottom {
   bottom: 0;
   position: absolute;
@@ -12,8 +15,8 @@ html {
   scroll-behavior: smooth;
 }
 
-nav {
-  background-color: #3DA9FD;
+.my-nav {
+  background-color: $main-nav-color;
   width: 100%;
   overflow: hidden;
   a:hover {
@@ -23,7 +26,7 @@ nav {
     display: inline-block;
   }
   a {
-    color: #320000;
+    color: $main-nav-text-color;
     font-weight: bolder;
     text-align: center;
     display: inline-block;
@@ -50,5 +53,22 @@ nav {
     margin-bottom: 0px;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+.portfolio-side-nav {
+  position: fixed;
+  right: 0 !important;
+  left: auto !important;
+  z-index: 10;
+  .portfolio-selector {
+    // position: fixed;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background-color: grey;
+    border: none;
+    display: block;
+    margin: 2em;
   }
 }
