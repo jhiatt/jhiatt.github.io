@@ -6576,15 +6576,17 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 .home-page .portfolio .portfolio-nav button {
   border-radius: 50%; }
 .home-page .portfolio .portfolio-body a {
-  margin: 10px; }
+  margin: 10px;
+  color: black; }
 .home-page .portfolio .portfolio-body .subsection {
-  margin-top: 30%;
-  margin-bottom: 30%;
+  margin-top: 20vh;
+  margin-bottom: 20vh;
   display: flex; }
 .home-page .portfolio .portfolio-body .page2 {
   background-color: #CFD8DC; }
   .home-page .portfolio .portfolio-body .page2 .product1 {
-    width: 60%;
+    width: 60vw;
+    height: 40vh;
     float: right; }
   .home-page .portfolio .portfolio-body .page2 .product1-img {
     width: 60%;
@@ -6626,7 +6628,8 @@ html {
   width: 100%;
   overflow: hidden; }
   .my-nav a:hover {
-    background-color: white; }
+    background-color: white;
+    color: black; }
   .my-nav li {
     display: inline-block; }
   .my-nav a {
@@ -6645,7 +6648,11 @@ html {
     width: 40vw;
     float: right; }
     .my-nav .nav-side a {
-      padding: .25em; }
+      padding: .5em;
+      margin-right: .5em;
+      float: right; }
+    .my-nav .nav-side img {
+      background: white; }
   .my-nav img {
     margin-top: 5px;
     margin-bottom: 0px;
@@ -6661,11 +6668,16 @@ html {
   height: 100%;
   overflow-x: hidden;
   z-index: 1; }
+  .portfolio-side-nav .selected {
+    opacity: .5; }
+  .portfolio-side-nav a {
+    color: #FFFFFF;
+    text-decoration: none; }
   .portfolio-side-nav .portfolio-selector {
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
-    background-color: grey;
+    background-color: #455A64;
     border: none;
     display: block;
     margin: 2em; }

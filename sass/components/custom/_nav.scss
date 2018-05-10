@@ -25,6 +25,7 @@ html {
   overflow: hidden;
   a:hover {
     background-color: white;
+    color: black;
   }
   li {
     display: inline-block;
@@ -47,8 +48,15 @@ html {
   .nav-side {
     width: 40vw;
     float: right;
+    // align-content: right;
     a {
-      padding: .25em;
+      // align: right;
+      padding: .5em;
+      margin-right: .5em;
+      float: right;
+    }
+    img {
+      background: white;
     }
   }
   img {
@@ -61,6 +69,13 @@ html {
 }
 
 .portfolio-side-nav {
+  .selected {
+    opacity: .5;
+  }
+  a {
+    color: #FFFFFF;
+    text-decoration: none;
+  }
   position: fixed;
   float: left;
   width: 10%;
@@ -77,9 +92,10 @@ html {
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
-    background-color: grey;
+    background-color: $main-nav-color;
     border: none;
     display: block;
     margin: 2em;
+
   }
 }
