@@ -6542,72 +6542,75 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   stroke-linecap: round;
   /*shape-rendering: crispEdges;*/ }
 
-.home-page html {
-  scroll-behavior: smooth; }
-.home-page .whole-page {
-  height: 100vh;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center; }
-.home-page .page1 {
-  background-image: url("../images/cs-background.jpg"); }
-  .home-page .page1 .info-parent {
-    height: 75vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end; }
-    .home-page .page1 .info-parent span {
-      padding: 3vh;
-      background-color: white;
-      border: 1px;
-      border-color: black;
-      margin-top: auto;
-      margin-bottom: auto;
-      margin-left: 60%;
-      margin-right: 20%;
-      width: 30%;
-      text-align: center; }
-    .home-page .page1 .info-parent a {
-      color: #320A71; }
-.home-page .my-container {
-  width: 90%;
-  margin: auto; }
-.home-page .portfolio .portfolio-nav button {
-  border-radius: 50%; }
-.home-page .portfolio .portfolio-body a {
-  margin: 10px;
-  color: black; }
-.home-page .portfolio .portfolio-body .subsection {
-  margin-top: 20vh;
-  margin-bottom: 20vh;
-  display: flex; }
-.home-page .portfolio .portfolio-body .page2 {
-  background-color: #CFD8DC; }
-  .home-page .portfolio .portfolio-body .page2 .product1 {
-    width: 60vw;
-    height: 40vh;
-    float: right; }
-  .home-page .portfolio .portfolio-body .page2 .product1-img {
-    width: 60%;
-    float: left;
-    margin-top: 15%;
-    margin-bottom: 15%; }
-  .home-page .portfolio .portfolio-body .page2 .next a {
-    bottom: 0;
-    color: #320000;
-    font-size: 2em; }
-.home-page .portfolio .portfolio-body .page3 {
-  background-color: #607D8B; }
-  .home-page .portfolio .portfolio-body .page3 .product2 {
-    width: 60%;
-    float: left;
-    display: inline-block; }
-  .home-page .portfolio .portfolio-body .page3 .product2-img {
-    width: 60%;
-    float: right;
-    margin-top: 15%;
-    margin-bottom: 15%; }
+.home-page {
+  font-family: 'Roboto Mono', monospace; }
+  .home-page html {
+    scroll-behavior: smooth; }
+  .home-page .whole-page {
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; }
+  .home-page .page1 {
+    background-image: url("../images/face.png"); }
+    .home-page .page1 .info-parent {
+      height: 75vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end; }
+      .home-page .page1 .info-parent span {
+        padding: 3vh;
+        background-color: white;
+        opacity: .9;
+        border: 1px;
+        border-color: black;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 67%;
+        margin-right: 18%;
+        width: 30%;
+        text-align: center; }
+      .home-page .page1 .info-parent a {
+        color: #320A71; }
+  .home-page .my-container {
+    width: 90%;
+    margin: auto; }
+  .home-page .portfolio .portfolio-nav button {
+    border-radius: 50%; }
+  .home-page .portfolio .portfolio-body a {
+    margin: 10px;
+    color: black; }
+  .home-page .portfolio .portfolio-body .subsection {
+    margin-top: 20vh;
+    margin-bottom: 20vh;
+    display: flex; }
+  .home-page .portfolio .portfolio-body .page2 {
+    background-color: #CFD8DC; }
+    .home-page .portfolio .portfolio-body .page2 .product1 {
+      width: 60vw;
+      height: 40vh;
+      float: right; }
+    .home-page .portfolio .portfolio-body .page2 .product1-img {
+      width: 60%;
+      float: left;
+      margin-top: 15%;
+      margin-bottom: 15%; }
+    .home-page .portfolio .portfolio-body .page2 .next a {
+      bottom: 0;
+      color: #320000;
+      font-size: 2em; }
+  .home-page .portfolio .portfolio-body .page3 {
+    background-color: #F2F2F2; }
+    .home-page .portfolio .portfolio-body .page3 .product2 {
+      width: 60%;
+      float: left;
+      display: inline-block; }
+    .home-page .portfolio .portfolio-body .page3 .product2-img {
+      width: 60%;
+      float: right;
+      margin-top: 15%;
+      margin-bottom: 15%; }
 
 .hidden {
   display: none; }

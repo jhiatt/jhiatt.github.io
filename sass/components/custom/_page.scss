@@ -1,12 +1,15 @@
 //created by me (not part of Materialize)
-$points-kanban-color: #CFD8DC;
-$pocket-money-color: #607D8B;
+$pocket-money-color: #CFD8DC;
+$points-kanban-color: #F2F2F2;
 
 .home-page {
+  // h1, h2, h3, h4,
+  font-family: 'Roboto Mono', monospace;
 
   html {
     scroll-behavior: smooth;
   }
+
 
   .whole-page {
     height: 100vh;
@@ -18,7 +21,7 @@ $pocket-money-color: #607D8B;
 
   .page1 {
     // min-width: 1024px;
-    background-image: url("../images/cs-background.jpg") ;
+    background-image: url("../images/face.png") ;
     // background-color: #3DA9FD;
 
     .info-parent {
@@ -31,13 +34,14 @@ $pocket-money-color: #607D8B;
         padding: 3vh;
         // font-size: 3vh;
         background-color: white;
+        opacity: .9;
         border: 1px;
         border-color: black;
         // border-radius: 25px;
         margin-top: auto;
         margin-bottom: auto;
-        margin-left: 60%;
-        margin-right: 20%;
+        margin-left: 67%;
+        margin-right: 18%;
         width: 30%;
         text-align: center;
       }
@@ -74,7 +78,7 @@ $pocket-money-color: #607D8B;
         display: flex;
       }
       .page2 {
-        background-color: $points-kanban-color;
+        background-color: $pocket-money-color;
         .product1 {
           width: 60vw;
           height:40vh;
@@ -100,7 +104,7 @@ $pocket-money-color: #607D8B;
 
 
       .page3 {
-        background-color: $pocket-money-color;
+        background-color: $points-kanban-color;
         .product2 {
           width: 60%;
           float: left;

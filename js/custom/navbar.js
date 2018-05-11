@@ -23,10 +23,10 @@ function addClassOnScroll() {
   }
 
   if (window.pageYOffset >= page3Position) {
-    btn1.classList.remove("selected");
-    btn2.classList.add("selected");
-  } else {
     btn1.classList.add("selected");
     btn2.classList.remove("selected");
+  } else {
+    btn1.classList.remove("selected");
+    btn2.classList.add("selected");
   }
 }
