@@ -6571,6 +6571,11 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
         margin-right: 18%;
         width: 30%;
         text-align: center; }
+        @media screen and (max-width: 630px) {
+          .home-page .page1 .info-parent span {
+            margin-left: 10%;
+            margin-right: 10%;
+            width: 80%; } }
       .home-page .page1 .info-parent a {
         color: #320A71; }
   .home-page .my-container {
@@ -6613,6 +6618,11 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
       float: right;
       margin-top: 15%;
       margin-bottom: 15%; }
+  @media screen and (max-width: 630px) {
+    .home-page .info-parent span {
+      margin-left: 10%;
+      margin-right: 10%;
+      width: 80%; } }
 
 .hidden {
   display: none; }

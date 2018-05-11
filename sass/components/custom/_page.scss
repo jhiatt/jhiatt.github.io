@@ -16,13 +16,10 @@ $points-kanban-color: #F2F2F2;
     background-repeat:no-repeat;
     background-size:cover;
     background-position:center;
-
   }
 
   .page1 {
-    // min-width: 1024px;
     background-image: url("../images/face.png") ;
-    // background-color: #3DA9FD;
 
     .info-parent {
       height: 75vh;
@@ -44,6 +41,12 @@ $points-kanban-color: #F2F2F2;
         margin-right: 18%;
         width: 30%;
         text-align: center;
+        @media screen and (max-width: 630px){
+          margin-left: 10%;
+          margin-right: 10%;
+          width: 80%;
+
+        }
       }
       a {
         color: #320A71;
@@ -62,10 +65,6 @@ $points-kanban-color: #F2F2F2;
         border-radius: 50%;
       }
     }
-
-// .container {display: table; height: 100%; position:absolute; overflow: hidden;width:100%;}
-// .helper {#position: absolute; #top: 50%;display: table-cell; vertical-align: middle;}
-// .content {#position: relative; #top: -50%;margin:0 auto;width:200px;border:1px solid orange;}
 
     .portfolio-body {
       a {
@@ -123,5 +122,14 @@ $points-kanban-color: #F2F2F2;
       }
     }
   }
-}
 
+  @media screen and (max-width: 630px){
+    .info-parent {
+      span {
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 80%;
+      }
+    }
+  }
+}
