@@ -76,6 +76,9 @@ $points-kanban-color: #F2F2F2;
         margin-top: 20vh;
         margin-bottom: 20vh;
         display: flex;
+        button {
+          margin-top: 1em;
+        }
       }
       .page2 {
         background-color: $pocket-money-color;

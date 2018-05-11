@@ -6585,6 +6585,8 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin-top: 20vh;
     margin-bottom: 20vh;
     display: flex; }
+    .home-page .portfolio .portfolio-body .subsection button {
+      margin-top: 1em; }
   .home-page .portfolio .portfolio-body .page2 {
     background-color: #CFD8DC; }
     .home-page .portfolio .portfolio-body .page2 .product1 {
