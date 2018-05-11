@@ -6637,11 +6637,11 @@ html {
   background-color: #455A64;
   width: 100%;
   overflow: hidden; }
+  .my-nav .small-nav {
+    display: none; }
   .my-nav a:hover {
     background-color: white;
     color: black; }
-  .my-nav li {
-    display: inline-block; }
   .my-nav a {
     color: #FFFFFF;
     font-weight: bolder;
@@ -6692,17 +6692,12 @@ html {
     display: block;
     margin: 2em; }
 
-.small-nav {
-  display: none; }
-
 @media screen and (max-width: 630px) {
-  .my-nav {
-    display: none; }
-
-  .small-nav {
+  .my-nav .small-nav {
+    display: inline; }
+  .my-nav .big-nav {
+    float: none;
     display: block;
-    background-color: #455A64;
-    width: 100%;
-    overflow: hidden; } }
+    text-align: left; } }
 
 /*# sourceMappingURL=materialize.min.css.map */

@@ -20,15 +20,15 @@ html {
 }
 
 .my-nav {
+  .small-nav {
+    display: none;
+  }
   background-color: $main-nav-color;
   width: 100%;
   overflow: hidden;
   a:hover {
     background-color: white;
     color: black;
-  }
-  li {
-    display: inline-block;
   }
   a {
     color: $main-nav-text-color;
@@ -99,18 +99,17 @@ html {
 
   }
 }
-.small-nav {
-  display: none;
-}
 
 @media screen and (max-width: 630px){
   .my-nav {
-    display: none;
-  }
-  .small-nav {
-    display: block;
-    background-color: $main-nav-color;
-    width: 100%;
-    overflow: hidden;
+    .small-nav {
+      display: inline;
+    }
+    .big-nav {
+      // display: none;
+      float: none;
+      display: block;
+      text-align: left;
+    }
   }
 }
