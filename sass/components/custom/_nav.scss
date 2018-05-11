@@ -99,3 +99,18 @@ html {
 
   }
 }
+.small-nav {
+  display: none;
+}
+
+@media screen and (max-width: 630px){
+  .my-nav {
+    display: none;
+  }
+  .small-nav {
+    display: block;
+    background-color: $main-nav-color;
+    width: 100%;
+    overflow: hidden;
+  }
+}

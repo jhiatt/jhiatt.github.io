@@ -1,6 +1,12 @@
+//event listeners
+document.getElementsByTagName("BODY")[0].onresize = function() {getNavBar()};
 window.onscroll = function() {addClassOnScroll()};
 
 var navbar = document.getElementById("my-nav");
+
+navbar.onload = getNavBar();
+
+
 var sidenav = document.getElementById("portfolio-side-nav");
 var page3 = document.getElementById("page-3");
 var btn1 = document.getElementById("portfolio-1-btn");
@@ -8,6 +14,18 @@ var btn2 = document.getElementById("portfolio-2-btn");
 
 var navPosition = navbar.offsetTop;
 var page3Position = page3.offsetTop;
+
+
+//add for small nav at certain pixles
+
+function getNavBar() {
+  console.log("im here");
+  if (screen.width >= 630) {
+    navbar = document.getElementById("my-nav");
+  } else {
+    navbar = document.getElementById("small-nav");
+  }
+}
 
 function addClassOnScroll() {
 
@@ -30,3 +48,4 @@ function addClassOnScroll() {
     btn2.classList.add("selected");
   }
 }
+
