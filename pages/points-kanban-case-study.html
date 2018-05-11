@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="../css/pages.css"  media="screen,projection"/>
+      <title>Points Kanban Case Study</title>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+      <nav class="my-nav">
+        <span class="nav-body">
+          <a href="./../index.html">Home</a>
+          <a href="mailto:jordanhiattcodes@gmail.com">Contact Me</a>
+          <a href="./images/jordan-resume DME.pdf" download>Resume</a>
+
+        </span>
+        <span class="nav-side">
+          <a href="https://github.com/jhiatt" target="_blank">
+            <img src="./../images/GitHub-logo-square.png" alt="Github Profile" height="30" width="30" />
+          </a>
+          <a href="https://www.linkedin.com/in/jordanhiatt/" target="_blank">
+            <img src="./../images/ln-black.png" alt="LinkedIn Profile" height="30" width="30" />
+          </a>
+          <a href="https://dev.to/jhiatt" target="_blank">
+            <img src="https://d2fltix0v2e0sb.cloudfront.net/dev-badge.svg" alt="Dev.to Blog" height="30" width="30" />
+          </a>
+          <a href="https://medium.com/@jhiatt" target="_blank">
+            <img src="./../images/medium-monogram.png" alt="Medium Blog" height="30" width="30" />
+          </a>
+  <!--             <a target="_blank" href="">Design Make Experiment</a>
+  -->          </span>
+      </nav>
+
+<div class="container">
+
+  <h1>
+    Points Kanban Case study
+  </h1>
+
+
+<p>  
+            There are times as a freelancer when it looks as if the 5 clients you have been courting for weeks might all work out at the same time and you just don’t have the manpower.  For some kinds of jobs, you know plenty of people looking for side projects of even just a few hours a week.  What if we had an automated system for dividing up the work and assigning value to all the deliverables that need to be completed.
+          </p>
+          <p>
+            Thats when I came up with the idea for Points Kanban, a Kanban system like Trello where a project can be divided into cards and points can be awarded for those cards completed.  If the project is completed income or ownership will be divided by the number of points held by each contributor.
+          </p>
+          <p>
+            An MVP would include:
+          </p>
+          <ul class="browser-default">
+            <li>An admin user account who would have sole ability to set point amounts and approve cards submitted for completion</li>
+            <li>Cards and columns set up like Trello</li>
+            <li>An ability for a user to claim a card</li>
+          </ul>
+          <p>
+            This is my first project with a Node.js/Express backend and a React/Redux front end on a Mongoose database.
+          </p>
+
+
+  <h5>
+    Problem:
+  </h5>
+
+  <p>
+    No way without constant supervision and management to corral a team of freelancers
+  </p>
+
+  <h5>
+    Hypothesis:
+  </h5>
+  <p>
+    If we create an environment that is open and transparent, freelancers will collaborate on projects a little peice at a time.
+  </p>
+      
+  <h5>
+    Beginning Assumptions:
+  </h5>
+  <ul>
+    <li>
+      Freelancers have a hard time trusting each other
+    </li>
+    <li>
+      Freelancers would work on someone else’s project with the promise of payment upon completion if expectations were clear and the process was transparent.
+    </li>
+    <li>
+      Someone or a group of people would trust a group of people working together
+    </li>
+  </ul>
+
+  <h5>
+    Solution:
+  </h5>
+  <p>
+    Automate the distribution of work by assigning value to parts to complete and allowing people to choose what they will work on
+  </p>
+
+  <h5>
+    Follow up problems:
+  </h5>
+    <p> 
+      How can you safeguard the amount of money allocated toward a task?
+    </p>
+  <ul>
+    <li>
+      Use Admin authority to safeguard assigned prices
+    </li>
+  </ul>
+  <p>
+    What if the dollar amount of the project shifts over time
+  </p>
+  <ul>
+    <li>
+      Allocate POINTS rather than dollars.  Post the conversion to dollars publicly.
+    </li>
+  </ul> 
+  <p>
+    What if work isn’t up to standard?
+    <ul>
+      <li>
+        Work must be approved before it is merged in.  Is there a way to link Github to Kanban so that when it is merged the user automatically gets credit and the card’s status changes?
+      </li>
+    </ul>
+  </p>
+</div>
+
+
+        <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+    </body>
+  </html>

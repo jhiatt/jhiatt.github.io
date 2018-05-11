@@ -1,0 +1,124 @@
+//created by me (not part of Materialize)
+$pocket-money-color: #CFD8DC;
+$points-kanban-color: #F2F2F2;
+
+.home-page {
+  // h1, h2, h3, h4,
+  font-family: 'Roboto Mono', monospace;
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+
+  .whole-page {
+    height: 100vh;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+
+  }
+
+  .page1 {
+    // min-width: 1024px;
+    background-image: url("../images/face.png") ;
+    // background-color: #3DA9FD;
+
+    .info-parent {
+      height: 75vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      span {
+        padding: 3vh;
+        // font-size: 3vh;
+        background-color: white;
+        opacity: .9;
+        border: 1px;
+        border-color: black;
+        // border-radius: 25px;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 67%;
+        margin-right: 18%;
+        width: 30%;
+        text-align: center;
+      }
+      a {
+        color: #320A71;
+      }
+    }
+  }
+
+  .my-container {
+    width: 90%;
+    margin: auto;
+  }
+
+  .portfolio {
+    .portfolio-nav {
+      button {
+        border-radius: 50%;
+      }
+    }
+
+// .container {display: table; height: 100%; position:absolute; overflow: hidden;width:100%;}
+// .helper {#position: absolute; #top: 50%;display: table-cell; vertical-align: middle;}
+// .content {#position: relative; #top: -50%;margin:0 auto;width:200px;border:1px solid orange;}
+
+    .portfolio-body {
+      a {
+        margin: 10px;
+        color: black;
+      }
+      .subsection {
+        margin-top: 20vh;
+        margin-bottom: 20vh;
+        display: flex;
+      }
+      .page2 {
+        background-color: $pocket-money-color;
+        .product1 {
+          width: 60vw;
+          height:40vh;
+          float: right;
+          // margin-top: 0%;
+          // margin-left: 30%;
+        }
+        .product1-img {
+          width: 60%;
+          float: left;
+          margin-top: 15%;
+          margin-bottom: 15%;
+        }
+        .next {
+          a {
+            bottom: 0;
+            // position: absolute;
+            color: #320000;
+            font-size: 2em;
+          }
+        }
+      }
+
+
+      .page3 {
+        background-color: $points-kanban-color;
+        .product2 {
+          width: 60%;
+          float: left;
+          display: inline-block;
+        }
+        .product2-img {
+          width: 60%;
+          float: right;
+          margin-top: 15%;
+          margin-bottom: 15%;
+          // min-width: 40%;
+        }
+      }
+    }
+  }
+}
+
