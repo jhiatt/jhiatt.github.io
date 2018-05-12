@@ -22,6 +22,9 @@ html {
 .my-nav {
   .small-nav {
     display: none;
+    img {
+      padding: .3em;
+    }
   }
   background-color: $main-nav-color;
   width: 100%;
@@ -100,16 +103,24 @@ html {
   }
 }
 
-@media screen and (max-width: 630px){
+@media screen and (max-width: 705px){
   .my-nav {
+    // position: relative;
     .small-nav {
       display: inline;
     }
     .big-nav {
-      // display: none;
+      display: none;
       float: none;
+    }
+    .open {
       display: block;
+      a {
       text-align: left;
+        display: block;
+      }
+      // position: absolute;
+
     }
   }
 }
