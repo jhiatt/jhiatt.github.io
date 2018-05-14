@@ -3,7 +3,6 @@ $pocket-money-color: #CFD8DC;
 $points-kanban-color: #F2F2F2;
 
 .home-page {
-  // h1, h2, h3, h4,
   font-family: 'Roboto Mono', monospace;
 
   html {
@@ -16,13 +15,13 @@ $points-kanban-color: #F2F2F2;
     background-repeat:no-repeat;
     background-size:cover;
     background-position:center;
-
   }
 
   .page1 {
-    // min-width: 1024px;
     background-image: url("../images/face.png") ;
-    // background-color: #3DA9FD;
+    @media screen and (max-width: 705px){
+      background-image: url("../images/face-close-tall.png");
+    }
 
     .info-parent {
       height: 75vh;
@@ -44,6 +43,14 @@ $points-kanban-color: #F2F2F2;
         margin-right: 18%;
         width: 30%;
         text-align: center;
+        @media screen and (max-width: 705px){
+          opacity: 1;
+          margin-top: 25vh;
+          margin-left: 10%;
+          margin-right: 10%;
+          width: 80%;
+
+        }
       }
       a {
         color: #320A71;
@@ -52,7 +59,7 @@ $points-kanban-color: #F2F2F2;
   }
 
   .my-container {
-    width: 90%;
+    width: 90vw;
     margin: auto;
   }
 
@@ -63,16 +70,13 @@ $points-kanban-color: #F2F2F2;
       }
     }
 
-// .container {display: table; height: 100%; position:absolute; overflow: hidden;width:100%;}
-// .helper {#position: absolute; #top: 50%;display: table-cell; vertical-align: middle;}
-// .content {#position: relative; #top: -50%;margin:0 auto;width:200px;border:1px solid orange;}
-
     .portfolio-body {
       a {
         margin: 10px;
         color: black;
       }
       .subsection {
+        max-height: 50vh;
         margin-top: 20vh;
         margin-bottom: 20vh;
         display: flex;
@@ -124,4 +128,19 @@ $points-kanban-color: #F2F2F2;
     }
   }
 }
+  @media screen and (max-width: 705px){
+    .home-page .portfolio .portfolio-body {
+      // display: block;
+      .page2 {
+        .product1 {
+          width: 100%;
+        }
+      }
+      .page3 {
+        .product2 {
+          width: 100%;
+        }
+      }
+    }
+  }
 

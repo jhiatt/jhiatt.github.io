@@ -6553,6 +6553,9 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     background-position: center; }
   .home-page .page1 {
     background-image: url("../images/face.png"); }
+    @media screen and (max-width: 705px) {
+      .home-page .page1 {
+        background-image: url("../images/face-close-tall.png"); } }
     .home-page .page1 .info-parent {
       height: 75vh;
       display: flex;
@@ -6571,10 +6574,17 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
         margin-right: 18%;
         width: 30%;
         text-align: center; }
+        @media screen and (max-width: 705px) {
+          .home-page .page1 .info-parent span {
+            opacity: 1;
+            margin-top: 25vh;
+            margin-left: 10%;
+            margin-right: 10%;
+            width: 80%; } }
       .home-page .page1 .info-parent a {
         color: #320A71; }
   .home-page .my-container {
-    width: 90%;
+    width: 90vw;
     margin: auto; }
   .home-page .portfolio .portfolio-nav button {
     border-radius: 50%; }
@@ -6582,6 +6592,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin: 10px;
     color: black; }
   .home-page .portfolio .portfolio-body .subsection {
+    max-height: 50vh;
     margin-top: 20vh;
     margin-bottom: 20vh;
     display: flex; }
@@ -6614,6 +6625,11 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
       margin-top: 15%;
       margin-bottom: 15%; }
 
+@media screen and (max-width: 705px) {
+  .home-page .portfolio .portfolio-body .page2 .product1 {
+    width: 100%; }
+  .home-page .portfolio .portfolio-body .page3 .product2 {
+    width: 100%; } }
 .hidden {
   display: none; }
 
@@ -6632,11 +6648,13 @@ html {
   background-color: #455A64;
   width: 100%;
   overflow: hidden; }
+  .my-nav .small-nav {
+    display: none; }
+    .my-nav .small-nav img {
+      padding: .3em; }
   .my-nav a:hover {
     background-color: white;
     color: black; }
-  .my-nav li {
-    display: inline-block; }
   .my-nav a {
     color: #FFFFFF;
     font-weight: bolder;
@@ -6686,5 +6704,23 @@ html {
     border: none;
     display: block;
     margin: 2em; }
+
+@media screen and (max-width: 705px) {
+  .my-nav .nav-side {
+    width: 80%;
+    display: inline; }
+  .my-nav .small-nav {
+    display: inline; }
+  .my-nav .big-nav {
+    display: none;
+    float: none; }
+  .my-nav .open {
+    display: block; }
+    .my-nav .open a {
+      text-align: left;
+      display: block; } }
+@media screen and (max-width: 705px) {
+  .portfolio-side-nav {
+    display: none; } }
 
 /*# sourceMappingURL=materialize.min.css.map */

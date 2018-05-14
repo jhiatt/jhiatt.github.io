@@ -20,15 +20,18 @@ html {
 }
 
 .my-nav {
+  .small-nav {
+    display: none;
+    img {
+      padding: .3em;
+    }
+  }
   background-color: $main-nav-color;
   width: 100%;
   overflow: hidden;
   a:hover {
     background-color: white;
     color: black;
-  }
-  li {
-    display: inline-block;
   }
   a {
     color: $main-nav-text-color;
@@ -97,5 +100,37 @@ html {
     display: block;
     margin: 2em;
 
+  }
+}
+
+@media screen and (max-width: 705px){
+  .my-nav {
+    .nav-side {
+      width: 80%;
+      display: inline;
+    }
+    // position: relative;
+    .small-nav {
+      display: inline;
+    }
+    .big-nav {
+      display: none;
+      float: none;
+    }
+    .open {
+      display: block;
+      a {
+      text-align: left;
+        display: block;
+      }
+      // position: absolute;
+
+    }
+  }
+}
+
+@media screen and (max-width: 705px){
+  .portfolio-side-nav {
+    display: none;
   }
 }
