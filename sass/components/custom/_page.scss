@@ -47,10 +47,14 @@ $points-kanban-color: #F2F2F2;
           opacity: 1;
           margin-top: 25vh;
           max-height: 65vh;
-          overflow: scroll;
           margin-left: 10%;
           margin-right: 10%;
           width: 80%;
+          @media screen and (max-height: 600px), screen and (max-width: 300px){
+            overflow: scroll;
+            margin-top: 23vh;
+            height: 60vh;
+          }
 
         }
       }
