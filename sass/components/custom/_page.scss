@@ -3,7 +3,6 @@ $pocket-money-color: #CFD8DC;
 $points-kanban-color: #F2F2F2;
 
 .home-page {
-  // h1, h2, h3, h4,
   font-family: 'Roboto Mono', monospace;
 
   html {
@@ -60,7 +59,7 @@ $points-kanban-color: #F2F2F2;
   }
 
   .my-container {
-    width: 90%;
+    width: 90vw;
     margin: auto;
   }
 
@@ -77,6 +76,7 @@ $points-kanban-color: #F2F2F2;
         color: black;
       }
       .subsection {
+        max-height: 50vh;
         margin-top: 20vh;
         margin-bottom: 20vh;
         display: flex;
@@ -128,3 +128,19 @@ $points-kanban-color: #F2F2F2;
     }
   }
 }
+  @media screen and (max-width: 705px){
+    .home-page .portfolio .portfolio-body {
+      // display: block;
+      .page2 {
+        .product1 {
+          width: 100%;
+        }
+      }
+      .page3 {
+        .product2 {
+          width: 100%;
+        }
+      }
+    }
+  }
+

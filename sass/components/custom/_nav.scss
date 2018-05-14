@@ -105,6 +105,10 @@ html {
 
 @media screen and (max-width: 705px){
   .my-nav {
+    .nav-side {
+      width: 80%;
+      display: inline;
+    }
     // position: relative;
     .small-nav {
       display: inline;
@@ -122,5 +126,11 @@ html {
       // position: absolute;
 
     }
+  }
+}
+
+@media screen and (max-width: 705px){
+  .portfolio-side-nav {
+    display: none;
   }
 }

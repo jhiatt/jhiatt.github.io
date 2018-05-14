@@ -6584,7 +6584,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
       .home-page .page1 .info-parent a {
         color: #320A71; }
   .home-page .my-container {
-    width: 90%;
+    width: 90vw;
     margin: auto; }
   .home-page .portfolio .portfolio-nav button {
     border-radius: 50%; }
@@ -6592,6 +6592,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin: 10px;
     color: black; }
   .home-page .portfolio .portfolio-body .subsection {
+    max-height: 50vh;
     margin-top: 20vh;
     margin-bottom: 20vh;
     display: flex; }
@@ -6624,6 +6625,11 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
       margin-top: 15%;
       margin-bottom: 15%; }
 
+@media screen and (max-width: 705px) {
+  .home-page .portfolio .portfolio-body .page2 .product1 {
+    width: 100%; }
+  .home-page .portfolio .portfolio-body .page3 .product2 {
+    width: 100%; } }
 .hidden {
   display: none; }
 
@@ -6700,6 +6706,9 @@ html {
     margin: 2em; }
 
 @media screen and (max-width: 705px) {
+  .my-nav .nav-side {
+    width: 80%;
+    display: inline; }
   .my-nav .small-nav {
     display: inline; }
   .my-nav .big-nav {
@@ -6710,5 +6719,8 @@ html {
     .my-nav .open a {
       text-align: left;
       display: block; } }
+@media screen and (max-width: 705px) {
+  .portfolio-side-nav {
+    display: none; } }
 
 /*# sourceMappingURL=materialize.min.css.map */
