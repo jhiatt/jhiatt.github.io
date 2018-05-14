@@ -20,6 +20,9 @@ $points-kanban-color: #F2F2F2;
 
   .page1 {
     background-image: url("../images/face.png") ;
+    @media screen and (max-width: 705px){
+      background-image: url("../images/face-close-tall.png");
+    }
 
     .info-parent {
       height: 75vh;
@@ -42,6 +45,8 @@ $points-kanban-color: #F2F2F2;
         width: 30%;
         text-align: center;
         @media screen and (max-width: 705px){
+          opacity: 1;
+          margin-top: 25vh;
           margin-left: 10%;
           margin-right: 10%;
           width: 80%;
