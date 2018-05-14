@@ -6578,6 +6578,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
           .home-page .page1 .info-parent span {
             opacity: 1;
             margin-top: 25vh;
+            max-height: 65vh;
             margin-left: 10%;
             margin-right: 10%;
             width: 80%; } }
