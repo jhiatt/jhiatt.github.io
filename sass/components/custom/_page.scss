@@ -5,6 +5,10 @@ $points-kanban-color: #F2F2F2;
 .home-page {
   font-family: 'Roboto Mono', monospace;
 
+  #mobile-home {
+    display: none;
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -20,7 +24,8 @@ $points-kanban-color: #F2F2F2;
   .page1 {
     background-image: url("../images/face.png") ;
     @media screen and (max-width: 705px){
-      background-image: url("../images/face-close-tall.png");
+      background-image: none;
+      background: #B4C0CE;
     }
 
     .info-parent {
@@ -130,6 +135,42 @@ $points-kanban-color: #F2F2F2;
   }
 }
   @media screen and (max-width: 705px){
+    .home-page .page1 {
+      .info-parent {
+        span {
+          display: none;
+        }
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+    }
+    .home-page #mobile-home {
+      background-image: url("../images/face-close-tall.png");
+      background-position: center;
+      background-size: 80vh;
+      height: 100vh;
+      width: 100vw;
+      display: block;
+      position: absolute;
+      z-index: 900;
+      background-repeat: no-repeat;
+      #mobile-home-card {
+        z-index: 950;
+        background: #FFFFFF;
+        padding: .75em;
+        width: 80vw;
+        height: auto;
+        max-height: 80vh;
+        margin-top: 20vh;
+        margin-left: 10vw;
+        margin-right: 10vw;
+        text-align: center;
+      }
+      @media screen and (max-height: 570px){
+        font-size: .9em;
+      }
+    }
     .home-page .portfolio .portfolio-body {
       // display: block;
       .page2 {

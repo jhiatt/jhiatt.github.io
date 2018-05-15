@@ -6544,6 +6544,8 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
 
 .home-page {
   font-family: 'Roboto Mono', monospace; }
+  .home-page #mobile-home {
+    display: none; }
   .home-page html {
     scroll-behavior: smooth; }
   .home-page .whole-page {
@@ -6555,7 +6557,8 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     background-image: url("../images/face.png"); }
     @media screen and (max-width: 705px) {
       .home-page .page1 {
-        background-image: url("../images/face-close-tall.png"); } }
+        background-image: none;
+        background: #B4C0CE; } }
     .home-page .page1 .info-parent {
       height: 75vh;
       display: flex;
@@ -6625,6 +6628,39 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
       float: right;
       margin-top: 15%;
       margin-bottom: 15%; }
+
+@media screen and (max-width: 705px) {
+  .home-page .page1 .info-parent {
+    width: 100vw;
+    height: 100vh;
+    position: relative; }
+    .home-page .page1 .info-parent span {
+      display: none; }
+
+  .home-page #mobile-home {
+    background-image: url("../images/face-close-tall.png");
+    background-position: center;
+    background-size: 80vh;
+    height: 100vh;
+    width: 100vw;
+    display: block;
+    position: absolute;
+    z-index: 900;
+    background-repeat: no-repeat; }
+    .home-page #mobile-home #mobile-home-card {
+      z-index: 950;
+      background: #FFFFFF;
+      padding: .75em;
+      width: 80vw;
+      height: auto;
+      max-height: 80vh;
+      margin-top: 20vh;
+      margin-left: 10vw;
+      margin-right: 10vw;
+      text-align: center; } }
+  @media screen and (max-width: 705px) and (max-height: 570px) {
+    .home-page #mobile-home {
+      font-size: .9em; } }
 
 @media screen and (max-width: 705px) {
   .home-page .portfolio .portfolio-body .page2 .product1 {
@@ -6707,19 +6743,21 @@ html {
     margin: 2em; }
 
 @media screen and (max-width: 705px) {
-  .my-nav .nav-side {
-    width: 80%;
-    display: inline; }
-  .my-nav .small-nav {
-    display: inline; }
-  .my-nav .big-nav {
-    display: none;
-    float: none; }
-  .my-nav .open {
-    display: block; }
-    .my-nav .open a {
-      text-align: left;
-      display: block; } }
+  .my-nav {
+    z-index: 1000; }
+    .my-nav .nav-side {
+      width: 80%;
+      display: inline; }
+    .my-nav .small-nav {
+      display: inline; }
+    .my-nav .big-nav {
+      display: none;
+      float: none; }
+    .my-nav .open {
+      display: block; }
+      .my-nav .open a {
+        text-align: left;
+        display: block; } }
 @media screen and (max-width: 705px) {
   .portfolio-side-nav {
     display: none; } }
