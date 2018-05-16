@@ -105,7 +105,7 @@ html {
 
 @media screen and (max-width: 705px){
   .my-nav {
-    position: fixed;
+    // position: fixed;
     z-index: 1000;
     .nav-side {
       width: 80%;
@@ -129,10 +129,10 @@ html {
 
     }
   }
-  .navTop {
-    bottom: 0;
-    top: auto;
-  }
+  // .navTop {
+  //   bottom: 0;
+  //   top: auto;
+  // }
 }
 
 @media screen and (max-width: 705px){
