@@ -55,6 +55,11 @@ $points-kanban-color: #F2F2F2;
           margin-left: 10%;
           margin-right: 10%;
           width: 80%;
+          @media screen and (max-height: 600px), screen and (max-width: 300px){
+            overflow: scroll;
+            margin-top: 23vh;
+            height: 60vh;
+          }
 
         }
       }
@@ -135,6 +140,9 @@ $points-kanban-color: #F2F2F2;
   }
 }
   @media screen and (max-width: 705px){
+    #casestudy {
+      margin-top: 15%;
+    }
     .home-page .page1 {
       .info-parent {
         span {

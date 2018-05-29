@@ -105,6 +105,8 @@ html {
 
 @media screen and (max-width: 705px){
   .my-nav {
+    top: 0;
+    position: fixed;
     z-index: 1000;
     .nav-side {
       width: 80%;
@@ -128,10 +130,16 @@ html {
 
     }
   }
+
 }
 
 @media screen and (max-width: 705px){
   .portfolio-side-nav {
     display: none;
+  }
+  #my-nav {
+    bottom: 0;
+    top: auto;
+    position: fixed;
   }
 }
