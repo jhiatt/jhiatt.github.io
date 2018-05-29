@@ -6636,6 +6636,9 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
       margin-bottom: 15%; }
 
 @media screen and (max-width: 705px) {
+  #casestudy {
+    margin-top: 15%; }
+
   .home-page .page1 .info-parent {
     width: 100vw;
     height: 100vh;
@@ -6750,6 +6753,8 @@ html {
 
 @media screen and (max-width: 705px) {
   .my-nav {
+    top: 0;
+    position: fixed;
     z-index: 1000; }
     .my-nav .nav-side {
       width: 80%;
@@ -6766,6 +6771,11 @@ html {
         display: block; } }
 @media screen and (max-width: 705px) {
   .portfolio-side-nav {
-    display: none; } }
+    display: none; }
+
+  #my-nav {
+    bottom: 0;
+    top: auto;
+    position: fixed; } }
 
 /*# sourceMappingURL=materialize.min.css.map */
