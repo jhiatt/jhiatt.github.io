@@ -49,14 +49,3 @@ function addClassOnScroll() {
   }
 }
 
-var hamburger = document.getElementById("hamburger");
-var navSpan = document.getElementById("nav-span");
-// var navSpan1 = document.getElementById("nav-span1");
-// var navSpan2 = document.getElementById("nav-span2");
-hamburger.onclick = openHamburger;
-
-function openHamburger() {
-  // navSpan1.classList.toggle("open");
-  // navSpan2.classList.toggle("open");
-  navSpan.classList.toggle("open");
-}
