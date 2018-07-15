@@ -5,14 +5,15 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
-      <link type="text/css" rel="stylesheet" href="../css/pages.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="../css/page.css"  media="screen,projection"/>
       <title>Pocket Money Case Study</title>
+      <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:500" rel="stylesheet">
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <link rel="shortcut icon" href="./images/bike-favicon.ico" type="image/x-icon">
     </head>
 
-    <body>
+    <body class="case-study">
       <nav class="my-nav">
         <span class="small-nav" id="hamburger">
           <img src=".././images/hamburger-menue-icon.png" class=".small-nav" height="30" width="30" alt="">
@@ -49,9 +50,16 @@
     Pocket Money Case study
   </h1>
 
-
+  
   <p>  
-    I have used and abandoned a lot of budgets but really most of what I need to know is how much I can spend without over-drafting or breaking my savings goal. Pocket money is an app that tells you exactly how much you can spend without over-drafting at any given time.
+    I am often waiting to line to get lunch, deciding what I can afford to get and realizing I have no idea.  I check my bank account and go through a hundred calculations in my head about when I am getting paid, what bills are coming out when, and whether or not 7 dollars is more important to me right now than that burrito.
+  </p>
+  <p>
+    This is really the question we are trying to answer when we budget: How much can I spend?  To answer the question of how much I can spend on lunch, most budgeting solutions want to know our bank information, our transaction history, and how much we have spent on lunch in the past six months. What if there was a way to keep our information as private as we want and require minimal effort to maintain.
+  </p>
+  <p>
+    Our solution is to zero in on answering the question, “How much can I spend?” and ignore all the others.  By lowering the importance of understanding past spending habits we can tell you how much you can spend now without collecting personal information and requiring as little information from you as possible.
+
   </p>
   <p>
     An MVP would include:
@@ -71,41 +79,97 @@
   </h5>
 
   <p>
-    Traditional budget apps take too much time to maintain, regardless of automation.  We need a stress free budgeting system that answers the one question you really need answers to, “How much can I spend right now?”
+    For anyone looking for a budgeting solution there are more options than you can possibly research.  Of course, too many options can create a lot of pressure to find the “right” solution, and after picking a solution that seems right the pressure to budget “correctly” can cause a lot of stress.  Many people are comfortable with the budgeting solutions they have found and stay on top of their budgets monthly.  Others, however, over commit to a budgeting process, get overwhelmed and abandon their budget entirely.  For those people, a simpler budgeting solution that fits their needs and personality is hard to find on the market.
   </p>
 
   <h5>
-    Hypothesis:
+    User Research:
   </h5>
   <p>
-    When setting up a budget people are over ambitious in committing to the work it will take to maintain because they are given the opportunity to over commit themselves.  When we inevitably fall short, budgeting becomes a burden and we lose motivation to catch up.  When we finally get far enough behind we give up.  If we lower the stakes and make it easy to catch up, people will stick with their budgets and get their most important questions answered.
+    We have conducted limited user research and have determined that there are as many budgeting approaches as there are people interested in budgeting.  Budgeters vary widely in:
   </p>
+
+  <ul>
+    <li>The amount of detail they would like to know about their budget</li>
+    <li>The amount of personal information they are willing to give to the budgeting software</li>
+    <li>The amount they will spend on budgeting software</li>
+    <li>Their level of commitment generally to a budget</li>
+  </ul>
       
+  <p>For our purposes we focus on two criteria to differentiate budgeters and their preferred budgeting method:</p>
+
+  <ul>
+    <li>Effort to maintain their budget</li>
+    <li>Personal Privacy and the amount of personal data they are willing to give to the budgeting solution provider</li>
+  </ul>
+
+  <p>Existing budgeting software generally falls along this range with products like Mint.com on the side of minimal effort to maintain but the maximum amount of information given to the software provider, and the home Excel spreadsheet solution on the side of maximum effort to maintain but minimal privacy lost.</p>
+
   <h5>
-    Beginning Assumptions:
+    Our Solution:
   </h5>
-  <ul class="browser-default">
+<!--   <ul class="browser-default">
     <li>When setting up a budget people will elect to require as much info per transaction as possible</li>
     <li>When entering transactions people will enter as little information as possible</li>
     <li>When expectation of information entered falls short of reality people feel an internal sense of failure</li>
     <li>When people don’t have time to “do it right” they fall behind and give up</li>
     <li>If each transaction was less valuable (i.e. cannot track deep categories of data over time) people will be happy to ignore old unentered transactions if they can</li>
-  </ul>
+  </ul> -->
 
   <h5>
     Solution:
   </h5>
   <p>
-    Limit the ability to categorize and track expenses. Make it really easy to reset the calculations and start over if you get behind by entering your current bank balance.  Limit the amount of transactions you need to enter by setting up all of your reoccurring expenses (and income) as events on a calendar that automatically rolls forward.  Automatically calculate the amount you can spend and display it prominently.
+    We have positioned our product to require minimum invasion of privacy while maintaining a very low level of effort to maintain.  We do this by boiling budgeting down to its most essential elements centered on what we believe is the only question a budgeter really needs answered:
+  </p>
+  <p><b> 
+    How much can I spend right now?
+  </b></p>
+  <p>
+    We then add as much flexibility as possible and strive to create an easy to use platform with a forgiving and stress free set of calculations in the background.
+  </p>
+  <p>
+    Our app will require some effort to set up; we will ask users to input all of their known expenses and income in a calendar format.
   </p>
 
-  <h5>
+  <h4>Design and Build Process</h4>
+  <img class="centered-img" src="../images/casestudy/pm-homepg.png" alt="home screen" width="100%">
+
+  <h5>User Personas</h5>
+  <h6><b>Jake</b></h6>
+  <p>Jake had an email account that was hacked which lead to items bought with his information on Amazon.  Jake works hard for his money and wants to have fun.  He doesn’t want to worry about third parties having access to his information</p>
+  <h6><b>Jen</b></h6>
+  <p>Jen has started and abandoned more budgets than she can count.  She tried Mint and realized she just didn’t care about how much she spent on groceries.  All Jen really wants to know is how much she can spend this month without running out of money next month.  Jen’s paychecks come every two weeks while all of her other expenses are monthly.  More than once she has overdrafted because she thought she had plenty of money until all her bills were due at once.</p>
+
+
+<!--   <h5>
     Follow up problems:
   </h5>
   <ul class="browser-default">
     <li>In order to coordinate with the bank and automatically import transactions probably requires a paid plan or a lot of security.</li>
     <li>This product makes the most sense as a mobile app (which we have not yet built).</li>
+  </ul> -->
+
+  <h5>Initial MVP</h5>
+  <p>The back-end was built in Ruby on Rails utilizing Devise for security and a TDD methodology for the more complex algorithms using RSpec.  The front-end was built utilizing both ruby gems and Vue.js.  A video of the MVP is found below.</p>
+
+  <h5>Redesign</h5>
+  <p>Before launching live the front end was moved to a separate application and redesigned and recoded using React and React Router.</p>
+
+  <h5>Progress</h5>
+  <a href="https://docs.google.com/document/d/1CcVrf2MGveAf_lr1E3PZ12JZKDTi9TMsjN_wbFG7ThU/edit?usp=sharing" target="_blank">View our project plan</a>
+
+  <h5>Follow up design research</h5>
+  <p>We will take a lean ux approach by launching our app as quickly as possible and get feedback live.  Before launching live will will take opportunities we find to get as much design feedback as possible.</p>
+
+  <h5>Challenges and Future development goals</h5>
+  <p>In future iterations of this product we plan to address the following:</p>
+  <ul>
+    <li>Create more of an emphasis on creating savings and variable budget items (food, clothing, etc).  Due to the nature of the of the algorithm that creates the Pocket Money amount it can appear that the money on hand is free to spend, however what is not emphasized is that once the money is spent it will not come back (future income is already baked into the calculation).</li>
+    <li>Shore up the background algorithms so that it is clearer how much money you have and for how long.  Design elements that reinforce these principles.</li>
+    <li>This product makes more sense as a mobile app that you can reference on the go.  Convert the front end to React Native and launch on the App Store and Google Play Store.</li>
   </ul>
+
 
 </div>
 
