@@ -8,11 +8,11 @@ body.case-study {
 
 .centered-img {
   magrin: auto;
-  display: block
+  display: block;
+  img {
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+  }
 }
 
-img {
-  border-width: 1px;
-  border-color: black;
-  border-style: solid;
-}

@@ -2907,10 +2907,9 @@ body.case-study {
 .centered-img {
   magrin: auto;
   display: block; }
-
-img {
-  border-width: 1px;
-  border-color: black;
-  border-style: solid; }
+  .centered-img img {
+    border-width: 1px;
+    border-color: black;
+    border-style: solid; }
 
 /*# sourceMappingURL=materialize.min.css.map */
