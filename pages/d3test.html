@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+<!--       <link type="text/css" rel="stylesheet" href="../css/pages.css"  media="screen,projection"/>
+ -->      <title>D3 Test</title>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <link rel="shortcut icon" href="./images/bike-favicon.ico" type="image/x-icon">
+
+      <!-- link to d3 -->
+      <script type='text/javascript' src="../d3/d3.js"></script>
+    </head>
+
+    <body class="case-study">
+        <nav class="my-nav">
+            <span class="small-nav" id="hamburger">
+            <img src=".././images/hamburger-menue-icon.png" class=".small-nav" height="30" width="30" alt="">
+            </span>
+            <span class="big-nav" id="nav-span">
+            
+            <span class="nav-body">
+                <a href="./../index.html">Home</a>
+                <a href="mailto:jordanhiattcodes@gmail.com">Contact Me</a>
+                <a href="../images/jordan-resume DME.pdf" download>Resume</a>
+
+            </span>
+            <span class="nav-side">
+                <a href="https://github.com/jhiatt" target="_blank">
+                <img src="./../images/GitHub-logo-square.png" alt="Github Profile" height="30" width="30" />
+                </a>
+                <a href="https://www.linkedin.com/in/jordanhiatt/" target="_blank">
+                <img src="./../images/ln-black.png" alt="LinkedIn Profile" height="30" width="30" />
+                </a>
+                <a href="https://medium.com/@jhiatt" target="_blank">
+                <img src="./../images/medium-monogram.png" alt="Medium Blog" height="30" width="30" />
+                </a>
+        <!--             <a target="_blank" href="">Design Make Experiment</a>  -->          
+            </span>
+            </span>
+        </nav>
+
+
+        <!-- NOTES:
+            - helpful article: https://observablehq.com/@d3/zoom-to-bounding-box 
+            - start local server: "python -m http.server 8888 &." launches http://localhost:8888/
+            - 
+        -->
+        <script type='text/javascript'>
+
+            // converter not working!!
+            var rowConverter = function(d) {
+                console.log('!!!!!!!!!!!!!!!!!!!!!!')
+                return {
+                    Employed: parseFloat(d.Employed),
+                    Employed_NA: d.Employed_NA,
+                    LAUS_Code: d['LAUS Code'],
+                    Labor_force: parseFloat(d.Labor_force),
+                    Labor_force_NA: d.Labor_force_NA,
+                    Period: d.Period,
+                    Preliminary: d.Preliminary,
+                    Unemployed: parseFloat(d.Unemployed),
+                    Unemployed_NA: d.Unemployed_NA,
+                    Unemployment_rate: parseFloat(d.Unemployment_rate),
+                    Unemployment_rate_NA: d.Unemployment_rate_NA,
+                    fips: d.fips
+                };
+            }
+            d3.select('body').append('p').text('New paragraph');
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv', rowConverter, function(data) {
+                console.log(data);
+            });
+        </script>
+
+
+        <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="./../js/nav/navbar-mini.js"></script>
+    </body>
+  </html>
