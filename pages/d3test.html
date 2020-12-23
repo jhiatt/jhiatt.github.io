@@ -54,8 +54,9 @@
         <script type='text/javascript'>
 
             // converter not working!!
+            var dataset;
+
             var rowConverter = function(d) {
-                console.log('!!!!!!!!!!!!!!!!!!!!!!')
                 return {
                     Employed: parseFloat(d.Employed),
                     Employed_NA: d.Employed_NA,
@@ -71,10 +72,25 @@
                     fips: d.fips
                 };
             }
-            d3.select('body').append('p').text('New paragraph');
-            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv', rowConverter, function(data) {
-                console.log(data);
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv', function(d) {
+                
+                // convert relevant vars to float format
+                dataset = rowConverter(d)
+                console.log(dataset);
+
+                d3.select('body')
+                    .selectAll('p')
+                    // .data(dataset)
+                    // .enter()
+                    .append('p')
+                    .text('New paragraph');
             });
+
+            // d3.select("body").selectAll("p")
+			// 	.data(dataset)
+			// 	.enter()
+			// 	.append("p")
+			// 	.text("New paragraph!");
         </script>
 
 
