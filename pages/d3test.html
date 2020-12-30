@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-  <html>
+  <html lang="en">
     <head>
       <meta charset="utf-8">
       <!--Import Google Icon Font-->
@@ -7,11 +7,12 @@
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
 <!--       <link type="text/css" rel="stylesheet" href="../css/pages.css"  media="screen,projection"/>
- -->      <title>D3 Test</title>
+ -->      
+      <title>D3 Test</title>
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <link rel="shortcut icon" href="./images/bike-favicon.ico" type="image/x-icon">
+      <link rel="shortcut icon" href="../images/bike-favicon.ico" type="image/x-icon">
 
       <!-- link to d3 -->
       <script type='text/javascript' src="../d3/d3.js"></script>
@@ -54,37 +55,45 @@
         <script type='text/javascript'>
 
             // converter not working!!
-            var dataset;
+            // This approach appears to be out of date, may need to delete
+            // var dataset = []
+            // var rowConverter = function(d) {
+            //     return {
+            //         Employed: parseFloat(d.Employed),
+            //         Employed_NA: d.Employed_NA,
+            //         LAUS_Code: d['LAUS Code'],
+            //         Labor_force: parseFloat(d.Labor_force),
+            //         Labor_force_NA: d.Labor_force_NA,
+            //         Period: d.Period,
+            //         Preliminary: d.Preliminary,
+            //         Unemployed: parseFloat(d.Unemployed),
+            //         Unemployed_NA: d.Unemployed_NA,
+            //         Unemployment_rate: parseFloat(d.Unemployment_rate),
+            //         Unemployment_rate_NA: d.Unemployment_rate_NA,
+            //         fips: d.fips
+            //     };
+            // }
 
-            var rowConverter = function(d) {
-                return {
-                    Employed: parseFloat(d.Employed),
-                    Employed_NA: d.Employed_NA,
-                    LAUS_Code: d['LAUS Code'],
-                    Labor_force: parseFloat(d.Labor_force),
-                    Labor_force_NA: d.Labor_force_NA,
-                    Period: d.Period,
-                    Preliminary: d.Preliminary,
-                    Unemployed: parseFloat(d.Unemployed),
-                    Unemployed_NA: d.Unemployed_NA,
-                    Unemployment_rate: parseFloat(d.Unemployment_rate),
-                    Unemployment_rate_NA: d.Unemployment_rate_NA,
-                    fips: d.fips
-                };
-            }
-            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv', function(d) {
-                
-                // convert relevant vars to float format
-                dataset = rowConverter(d)
-                console.log(dataset);
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv').then(function(data) {
+
+                // convert relevant vars to float format (legacy code from commented out lines above, delete if those are deleted)
+                // dataset.push(rowConverter(data));
 
                 d3.select('body')
-                    .selectAll('p')
-                    // .data(dataset)
-                    // .enter()
-                    .append('p')
-                    .text('New paragraph');
+                .selectAll('p')
+                .data(data)
+                .enter()
+                .append('p')
+                .text(function(d) { return d['Employed']; });
+
             });
+            
+            // d3.select('body')
+            //     .selectAll('p')
+            //     .data(dataset)
+            //     .enter()
+            //     .append('p')
+            //     .text(function(d) { return d['Employed']; });
 
             // d3.select("body").selectAll("p")
 			// 	.data(dataset)
