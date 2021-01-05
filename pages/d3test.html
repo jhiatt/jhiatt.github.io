@@ -52,6 +52,17 @@
             - start local server: "python -m http.server 8888 &." launches http://localhost:8888/
             - 
         -->
+
+        <style type="text/css">
+		
+			div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;
+				background-color: teal;
+			}
+		
+		</style>
         <script type='text/javascript'>
 
             // converter not working!!
@@ -74,36 +85,115 @@
             //     };
             // }
 
+            
+            // SVG SETUP
+            // Establish the svg parameters
+            var w = 1000;
+            var h = 600;
+            
+            // Projection
+            var projection = d3.geoAlbersUsa()
+                               .translate([w/2, h/2]) //translate to move everything to the middle
+            //    .scale([500]) //defalut scale for projection is 1000
+            
+            // Path
+            var path = d3.geoPath()
+                         .projection(projection);
+            
+            // Color
+            var color = d3.scaleQuantize()
+                          .range(['#fff7fb','#ece7f2','#d0d1e6','#a6bddb','#74a9cf','#3690c0','#0570b0','#045a8d','#023858']) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
+            
+            // Create SVG element
+            var svg = d3.select('body')
+                        .append('svg')
+                        .attr('width', w)
+                        .attr('height', h);
+            
+            // LOAD IN DATA
+
+            
+            // load in unemployment data
             d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv').then(function(data) {
+            
+                // link data to color scale
+                color.domain([
+                    d3.min(data, function(d) { return d.Unemployment_rate}),
+                    d3.max(data, function(d) { return d.Unemployment_rate})
+                ]);
+
+                // Loading GeoJason
+                // should I save this data to my github so I know it won't change?
+                d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(json) {
+                    
+                    // Merge GeoJson data with unemp. data (loop through unemp)
+                    // Could also do this in python before hand if this takes long
+                    for (var i = 0; i<data.length; i++) {
+
+                        // pull FIPS from county
+                        var dataFips = data[i].fips;
+
+                        // find unemp data value, convert to float
+                        var dataValue = parseFloat(data[i].Unemployment_rate);
+
+                        // find corresponding GeoJson FIPS (for loop with j)
+                        for(var j=0; j<json.features.length; j++) {
+                            // TAKES WAY TOO LONG!!!!!!!!! MOVE TO PYTHON!!!!
+                            
+                            // save the correspondig fips in from GeoJson
+                            var jsonFips = json.features[j].properties.STATE + json.features[j].properties.COUNTY;
+                            
+                            // find the matching county in GeoJason
+                            if (dataFips == jsonFips) {
+
+                                // when the right county in GeoJson is found, save the value there
+                                json.features[j].properties.value = dataValue;
+
+                                // after copying, this loop can be cancelled
+                                break;
+                            }
+                        }
+
+                    }
+
+                    // Bind data to a single path with the GeoJason feature
+                    svg.selectAll('path')
+                        .data(json.features)
+                        .enter()
+                        .append('path')
+                        .attr('d', path)
+                        .style('fill', function(d) {
+                            //data value
+                            var value = d.properties.value;
+
+                            if(value) {
+                                return color(value); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                            } else {
+                                return '#ccc'; // return gray if no value
+                            }
+                        })
+                })
 
                 // convert relevant vars to float format (legacy code from commented out lines above, delete if those are deleted)
                 // dataset.push(rowConverter(data));
-
-                d3.select('body')
-                .selectAll('p')
-                .data(data)
-                .enter()
-                .append('p')
-                .text(function(d) { return d['Employed']; });
-
+            
+                // d3.select('body')
+                //     .selectAll('div')
+                //     .data(data)
+                //     .enter()
+                //     .append('div')
+                //     .attr('class', 'bar')
+                //     .style('height', function(d){
+                //         return d['Employed'] + 'px';
+                // });
+            
             });
             
-            // d3.select('body')
-            //     .selectAll('p')
-            //     .data(dataset)
-            //     .enter()
-            //     .append('p')
-            //     .text(function(d) { return d['Employed']; });
-
-            // d3.select("body").selectAll("p")
-			// 	.data(dataset)
-			// 	.enter()
-			// 	.append("p")
-			// 	.text("New paragraph!");
-        </script>
+            </script>
 
 
-        <!--Import jQuery before materialize.js-->
-      <script type="text/javascript" src="./../js/nav/navbar-mini.js"></script>
-    </body>
-  </html>
+
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="./../js/nav/navbar-mini.js"></script>
+</body>
+</html>
