@@ -53,38 +53,7 @@
             - 
         -->
 
-        <style type="text/css">
-		
-			div.bar {
-				display: inline-block;
-				width: 20px;
-				height: 75px;
-				background-color: teal;
-			}
-		
-		</style>
         <script type='text/javascript'>
-
-            // converter not working!!
-            // This approach appears to be out of date, may need to delete
-            // var dataset = []
-            // var rowConverter = function(d) {
-            //     return {
-            //         Employed: parseFloat(d.Employed),
-            //         Employed_NA: d.Employed_NA,
-            //         LAUS_Code: d['LAUS Code'],
-            //         Labor_force: parseFloat(d.Labor_force),
-            //         Labor_force_NA: d.Labor_force_NA,
-            //         Period: d.Period,
-            //         Preliminary: d.Preliminary,
-            //         Unemployed: parseFloat(d.Unemployed),
-            //         Unemployed_NA: d.Unemployed_NA,
-            //         Unemployment_rate: parseFloat(d.Unemployment_rate),
-            //         Unemployment_rate_NA: d.Unemployment_rate_NA,
-            //         fips: d.fips
-            //     };
-            // }
-
             
             // SVG SETUP
             // Establish the svg parameters
@@ -124,33 +93,35 @@
 
                 // Loading GeoJason
                 // should I save this data to my github so I know it won't change?
-                d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(json) {
+                d3.json('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/grouped_geojson.json').then(function(json) {
                     
+                    // create a data object to store coordinates and unemployment info
+                    var featuresLoaded = []
+
                     // Merge GeoJson data with unemp. data (loop through unemp)
                     // Could also do this in python before hand if this takes long
                     for (var i = 0; i<data.length; i++) {
-
                         // pull FIPS from county
                         var dataFips = data[i].fips;
-
+                        
                         // find unemp data value, convert to float
                         var dataValue = parseFloat(data[i].Unemployment_rate);
+                        
+                        // loop through the list of states
+                        for (var j=0; j<json.length; j++) {
+                            console.log('!!!!!!!!!!!!!!!!!') // NOT RUNNING!!!!!
+                        
+                            if (dataFips.slice(0,2) == json.features[j].id) {
 
-                        // find corresponding GeoJson FIPS (for loop with j)
-                        for(var j=0; j<json.features.length; j++) {
-                            // TAKES WAY TOO LONG!!!!!!!!! MOVE TO PYTHON!!!!
-                            
-                            // save the correspondig fips in from GeoJson
-                            var jsonFips = json.features[j].properties.STATE + json.features[j].properties.COUNTY;
-                            
-                            // find the matching county in GeoJason
-                            if (dataFips == jsonFips) {
+                                // loop through the counties for that state
+                                stateCounties = json.features[j].properties.counties
 
-                                // when the right county in GeoJson is found, save the value there
-                                json.features[j].properties.value = dataValue;
-
-                                // after copying, this loop can be cancelled
-                                break;
+                                for (var k; k<stateCounties.length; k++) {
+                                    if (stateCounties[k].id == dataFips) {
+                                        stateCounties[k].value = dataValue
+                                        featuresLoaded.push(stateCounties[k])
+                                    }
+                                }
                             }
                         }
 
@@ -158,13 +129,13 @@
 
                     // Bind data to a single path with the GeoJason feature
                     svg.selectAll('path')
-                        .data(json.features)
+                        .data(featuresLoaded)
                         .enter()
                         .append('path')
                         .attr('d', path)
                         .style('fill', function(d) {
                             //data value
-                            var value = d.properties.value;
+                            var value = d.value;
 
                             if(value) {
                                 return color(value); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
@@ -173,19 +144,6 @@
                             }
                         })
                 })
-
-                // convert relevant vars to float format (legacy code from commented out lines above, delete if those are deleted)
-                // dataset.push(rowConverter(data));
-            
-                // d3.select('body')
-                //     .selectAll('div')
-                //     .data(data)
-                //     .enter()
-                //     .append('div')
-                //     .attr('class', 'bar')
-                //     .style('height', function(d){
-                //         return d['Employed'] + 'px';
-                // });
             
             });
             
