@@ -110,7 +110,7 @@
                         for (var j=0; j<json.features.length; j++) {
                             
                             if (dataFips.slice(0,2) == json.features[j].id) {
-                                
+
                                 // loop through the counties for that state
                                 stateCounties = json.features[j].properties.counties
                                 for (var k=0; k<stateCounties.length; k++) {
@@ -128,12 +128,40 @@
 
                     }
 
+                    // // Bind data to a single path with the GeoJason feature
+                    // svg.selectAll('path')
+                    //     .data(featuresLoaded)
+                    //     .enter()
+                    //     .append('path')
+                    //     .attr('d', path)
+                    //     .style('fill', function(d) {
+                    //         //data value
+                    //         var value = d.value;
+
+                    //         if(value) {
+                    //             return color(value); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                    //         } else {
+                    //             return '#ccc'; // return gray if no value
+                    //         }
+                    //     })
+                    
+                    // not working, state lines not showing above county lines
+                    svg.selectAll('path')
+                        .data(json.features)
+                        .enter()
+                        .append('path')
+                        .attr('d', path)
+                        // .attr('stroke-width', '10px')
+                        .attr("stroke", "white")
+                        .attr('fill','none')
+
                     // Bind data to a single path with the GeoJason feature
                     svg.selectAll('path')
                         .data(featuresLoaded)
                         .enter()
                         .append('path')
                         .attr('d', path)
+                        // .attr('stroke', 'white') //enable this with an option?
                         .style('fill', function(d) {
                             //data value
                             var value = d.value;
@@ -149,6 +177,11 @@
             });
             
             </script>
+            <div>
+                <button>Unemployment Rate</button>
+                <button>Presidential Election</button>
+                <button>Population</button>
+            </div>
 
 
 
