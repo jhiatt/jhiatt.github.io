@@ -127,24 +127,8 @@
                         }
 
                     }
-
-                    // // Bind data to a single path with the GeoJason feature
-                    // svg.selectAll('path')
-                    //     .data(featuresLoaded)
-                    //     .enter()
-                    //     .append('path')
-                    //     .attr('d', path)
-                    //     .style('fill', function(d) {
-                    //         //data value
-                    //         var value = d.value;
-
-                    //         if(value) {
-                    //             return color(value); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
-                    //         } else {
-                    //             return '#ccc'; // return gray if no value
-                    //         }
-                    //     })
                     
+                    console.log(json.features)
                     // not working, state lines not showing above county lines
                     svg.selectAll('path')
                         .data(json.features)
@@ -161,7 +145,8 @@
                         .enter()
                         .append('path')
                         .attr('d', path)
-                        // .attr('stroke', 'white') //enable this with an option?
+                        .attr('stroke', 'white') //enable this with an option?
+                        .attr('stroke-width','.2px')
                         .style('fill', function(d) {
                             //data value
                             var value = d.value;
@@ -176,12 +161,19 @@
             
             });
             
+            d3.json('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unempGeo.json').then(function(test) {
+                console.log(test)
+            });
             </script>
             <div>
                 <button>Unemployment Rate</button>
                 <button>Presidential Election</button>
                 <button>Population</button>
             </div>
+
+            <h1>County Data Project</h1>
+
+
 
 
 
