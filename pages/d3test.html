@@ -79,92 +79,95 @@
                         .attr('width', w)
                         .attr('height', h);
             
-            // LOAD IN DATA
 
             
-            // load in unemployment data
-            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv').then(function(data) {
-            
-                // link data to color scale
-                color.domain([
-                    d3.min(data, function(d) { return d.Unemployment_rate}),
-                    d3.max(data, function(d) { return d.Unemployment_rate})
-                ]);
+            // LOAD DATA
+            d3.json('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unempGeo.json').then(function(json) {
+                // console.log(json)
 
-                // Loading GeoJason
-                d3.json('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/grouped_geojson.json').then(function(json) {
-                    
-                    // create a data object to store coordinates and unemployment info
-                    var featuresLoaded = []
+                // SET DATE RANGE
+                //look up sample date range (picked a random early one, not the first one, all data has been checked to ensure they have the same date range of data with NA's to fill the gaps)
 
-                    // Merge GeoJson data with unemp. data (loop through unemp)
-                    // Still takes a few seconds to load, may need to combine in python before hand.  Requires duplicate code for each plot in this case.
-                    for (var i = 0; i<data.length; i++) {
-                        // pull FIPS from county
-                        var dataFips = data[i].fips;
-                        
-                        // find unemp data value, convert to float
-                        var dataValue = parseFloat(data[i].Unemployment_rate);
-                        
-                        // loop through the list of states
-                        for (var j=0; j<json.features.length; j++) {
-                            
-                            if (dataFips.slice(0,2) == json.features[j].id) {
+                // use date_range for looking up specific dates. Use position in array rather than values, dates should all be in the same order.
+                var date_range = [];
+                var json_data = json.features[5].properties.counties[0].value.data;
 
-                                // loop through the counties for that state
-                                stateCounties = json.features[j].properties.counties
-                                for (var k=0; k<stateCounties.length; k++) {
-                                    if (stateCounties[k].id == dataFips) {
-                                        stateCounties[k].value = dataValue
-                                        featuresLoaded.push(stateCounties[k])
+                for (var i=0; i<json_data.length; i++) {
+                    date_range.push(json_data[i][1])
+                }
 
-                                        break;
-                                    }
-                                }
+                // these should be index numbers
+                var beg_date = 10
+                var end_date = date_range.length
 
-                                break;
-                            }
+                // console.log(date_range.slice(beg_date,end_date))
+
+
+                // SIMPLIFY PATH DATA
+
+                // create a data object to store coordinates and unemployment info
+                var path_data = []
+
+                // note: we don't use the state data yet, we could flatten the incoming json data to just reside at the county level and add state info there.
+                for (var j=0; j<json.features.length; j++){
+                    var counties = json.features[j].properties.counties;
+                    for (var k=0; k<counties.length; k++) {
+
+                        // sum value and add it to county data
+                        // get the appropriate range of values for the correct periods
+                        var range = counties[k].value.data.slice(beg_date,end_date);
+
+                        // pull out only the values
+                        var range_values = []
+                        for (var l=0; l<range.length; l++){
+                            range_values.push(range[l][0]);
                         }
 
+                        // sum to get single number
+                        var sum_range = range_values.reduce((a,b) => parseFloat(a)+parseFloat(b),0);
+
+                        // save to geojson
+                        counties[k].total_value = sum_range;
+                        path_data.push(counties[k])
                     }
-                    
-                    console.log(json.features)
-                    // not working, state lines not showing above county lines
-                    svg.selectAll('path')
-                        .data(json.features)
-                        .enter()
-                        .append('path')
-                        .attr('d', path)
-                        // .attr('stroke-width', '10px')
-                        .attr("stroke", "white")
-                        .attr('fill','none')
+                }
 
-                    // Bind data to a single path with the GeoJason feature
-                    svg.selectAll('path')
-                        .data(featuresLoaded)
-                        .enter()
-                        .append('path')
-                        .attr('d', path)
-                        .attr('stroke', 'white') //enable this with an option?
-                        .attr('stroke-width','.2px')
-                        .style('fill', function(d) {
-                            //data value
-                            var value = d.value;
+                // console.log(path_data)
+                // link data to color scale
+                color.domain([
+                    d3.min(path_data, function(d) { return d.total_value}),
+                    d3.max(path_data, function(d) { return d.total_value})
+                ]);
 
-                            if(value) {
-                                return color(value); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
-                            } else {
-                                return '#ccc'; // return gray if no value
-                            }
-                        })
-                })
-            
-            });
-            
-            d3.json('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unempGeo.json').then(function(test) {
-                console.log(test)
+                // Bind data to a single path with the GeoJason feature
+                svg.selectAll('path')
+                    .data(path_data)
+                    .enter()
+                    .append('path')
+                    .attr('d', path)
+                    .attr('stroke', 'black') //enable/disable this with an option?
+                    .attr('stroke-width','.2px')
+                    .style('fill', function(d) {
+                        //data value
+                        var value = d.total_value;
+
+                        if(value) {
+                            return color(value); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                        } else {
+                            return '#ccc'; // return gray if no value
+                        }
+                    })
+                
             });
             </script>
+            <label for="begDate">Starting Period: </label>
+
+            <select name="begDate" id="begDate">
+              <!-- <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="mercedes">Mercedes</option>
+              <option value="audi">Audi</option> -->
+            </select>
             <div>
                 <button>Unemployment Rate</button>
                 <button>Presidential Election</button>
