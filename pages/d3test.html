@@ -16,6 +16,17 @@
 
       <!-- link to d3 -->
       <script type='text/javascript' src="../d3/d3.js"></script>
+      <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+      <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+      <style>
+        .d3-tip {
+            line-height: 1;
+            padding: 12px;
+            background: rgba(43,43,43, 0.8);
+            color: #fff;
+            border-radius: 2px;
+        }
+      </style>
     </head>
 
     <body class="case-study">
@@ -49,6 +60,7 @@
 
         <!-- NOTES:
             - helpful article: https://observablehq.com/@d3/zoom-to-bounding-box 
+            - https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
             - start local server: "python -m http.server 8888 &." launches http://localhost:8888/
             - 
         -->
@@ -57,12 +69,13 @@
             
             // SVG SETUP
             // Establish the svg parameters
-            var w = 1000;
-            var h = 600;
+            const width = 1000;
+            const height = 600;
+            const margin = 10;
             
             // Projection
             var projection = d3.geoAlbersUsa()
-                               .translate([w/2, h/2]) //translate to move everything to the middle
+                               .translate([width/2, height/2]) //translate to move everything to the middle
             //    .scale([500]) //defalut scale for projection is 1000
             
             // Path
@@ -73,17 +86,46 @@
             var color = d3.scaleQuantize()
                           .range(['#fff7fb','#ece7f2','#d0d1e6','#a6bddb','#74a9cf','#3690c0','#0570b0','#045a8d','#023858']) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
             
+            // set up tooltips
+            // thanks to Louise Whitaker http://bl.ocks.org/lwhitaker3/e8090246a20d9515789b
+            // var tip = d3.tip()
+            //     .attr('class', 'd3-tip')
+            //     .offset([-5, 0])
+            //     .html(function(d) {
+            //         console.log(d)
+            //         if (d) {
+            //             console.log(d);
+            //             return d.properties.name + ": " + d.total_value;
+            //         } else {
+            //             console.log("no dataRow", d);
+            //         //     return d.properties.name + ": No data.";
+            //         }
+            //     })
+
             // Create SVG element
             var svg = d3.select('body')
                         .append('svg')
-                        .attr('width', w)
-                        .attr('height', h);
+                        // .create("svg")
+                        .attr("viewBox", [-margin, 0, width + margin, height + margin]);
             
+
+            // set up legend
+            // svg
+            //     .append("g")
+            //     .attr("transform", "translate(610,20)")
+            //     .append(() => legend({ color, title: 'data.title', width: 260 }));    
+
+
+            // add tool tips
+            // svg.call(tip,);
+
+ 
 
             
             // LOAD DATA
             d3.json('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unempGeo.json').then(function(json) {
-                // console.log(json)
+                console.log(json)
+                json_map = d3.map(json)
 
                 // SET DATE RANGE
                 //look up sample date range (picked a random early one, not the first one, all data has been checked to ensure they have the same date range of data with NA's to fill the gaps)
@@ -132,19 +174,38 @@
                     }
                 }
 
-                // console.log(path_data)
+                console.log(path_data)
+                path_map = d3.map(path_data)
                 // link data to color scale
                 color.domain([
                     d3.min(path_data, function(d) { return d.total_value}),
                     d3.max(path_data, function(d) { return d.total_value})
                 ]);
 
+                
+                // not working, state lines not showing above county lines	
+                // svg.select("#map")
+                //         .data(json.features)	
+                //         .append('path')	
+                //         .attr('d', path)	
+                //         // .attr('stroke-width', '10px')	
+                //         .attr("stroke", "white")	
+                //         .attr('fill','none')
+
+
+
                 // Bind data to a single path with the GeoJason feature
-                svg.selectAll('path')
+                svg
+                    .append("g")
+                    .attr("id", "map")
+                    .selectAll('path')
                     .data(path_data)
                     .enter()
                     .append('path')
+                    .attr("class", "county")
                     .attr('d', path)
+                    // .on('mouseover', tip.show)
+                    // .on('mouseout', tip.hide)
                     .attr('stroke', 'black') //enable/disable this with an option?
                     .attr('stroke-width','.2px')
                     .style('fill', function(d) {
@@ -157,8 +218,66 @@
                             return '#ccc'; // return gray if no value
                         }
                     })
+                    // .append('title')
+                    // .text((d) => 'County: ${d.properties.name}, ${d.total_value}')
+                
+                    const tooltip = svg.append("g");
+
+                    svg
+                        .selectAll(".county")
+                        .on("touchmove mousemove", function(event, d) {
+                        tooltip.call(
+                    //         callout,
+                    //         `${format(path_map.get(d.id))}
+                    // ${d.properties.name}, ${json_map.get(d.id.slice(0, 2)).name}`
+                    //     );
+                    //     tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
+                        d3.select(this)
+                            .attr("stroke", "red")
+                            .raise();
+                        })
+                        .on("touchend mouseleave", function() {
+                        tooltip.call(callout, null);
+                        d3.select(this)
+                            .attr("stroke", null)
+                            .lower();
+                        });             
                 
             });
+
+            // import {callout} from @d3/line-chart-with-tooltip
+            format = d => `${d}%`
+            callout = (g, value) => {
+  if (!value) return g.style("display", "none");
+
+  g
+      .style("display", null)
+      .style("pointer-events", "none")
+      .style("font", "10px sans-serif");
+
+  const path = g.selectAll("path")
+    .data([null])
+    .join("path")
+      .attr("fill", "white")
+      .attr("stroke", "black");
+
+  const text = g.selectAll("text")
+    .data([null])
+    .join("text")
+    .call(text => text
+      .selectAll("tspan")
+      .data((value + "").split(/\n/))
+      .join("tspan")
+        .attr("x", 0)
+        .attr("y", (d, i) => `${i * 1.1}em`)
+        .style("font-weight", (_, i) => i ? null : "bold")
+        .text(d => d));
+
+  const {x, y, width: w, height: h} = text.node().getBBox();
+
+  text.attr("transform", `translate(${-w / 2},${15 - y})`);
+  path.attr("d", `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`);
+}
             </script>
             <label for="begDate">Starting Period: </label>
 
