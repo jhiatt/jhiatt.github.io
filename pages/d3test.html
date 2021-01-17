@@ -16,8 +16,9 @@
 
       <!-- link to d3 -->
       <script type='text/javascript' src="../d3/d3.js"></script>
-      <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+      <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> <!-- for using d3.tip -->
       <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+      <script src="https://unpkg.com/topojson@3"></script>   <!-- stitching together geojson -->
       <style>
         .d3-tip {
             line-height: 1;
@@ -151,6 +152,7 @@
                 var path_data = []
 
                 // note: we don't use the state data yet, we could flatten the incoming json data to just reside at the county level and add state info there.
+                // can actually do all of this without for loops using data in a d3.map format (like a 2 way hash table) and look up value when setting color using [d3 map object].get
                 for (var j=0; j<json.features.length; j++){
                     var counties = json.features[j].properties.counties;
                     for (var k=0; k<counties.length; k++) {
@@ -184,6 +186,7 @@
 
                 
                 // not working, state lines not showing above county lines	
+                // can use topo json which can stitch geojson lines together
                 // svg.select("#map")
                 //         .data(json.features)	
                 //         .append('path')	
@@ -227,11 +230,11 @@
                         .selectAll(".county")
                         .on("touchmove mousemove", function(event, d) {
                         tooltip.call(
-                    //         callout,
-                    //         `${format(path_map.get(d.id))}
-                    // ${d.properties.name}, ${json_map.get(d.id.slice(0, 2)).name}`
-                    //     );
-                    //     tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
+                            callout,
+                            `${format(path_map.get(d.id))}
+                    ${d.properties.name}, ${json_map.get(d.id.slice(0, 2)).name}`
+                        );
+                        tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
                         d3.select(this)
                             .attr("stroke", "red")
                             .raise();
@@ -248,36 +251,36 @@
             // import {callout} from @d3/line-chart-with-tooltip
             format = d => `${d}%`
             callout = (g, value) => {
-  if (!value) return g.style("display", "none");
+                if (!value) return g.style("display", "none");
 
-  g
-      .style("display", null)
-      .style("pointer-events", "none")
-      .style("font", "10px sans-serif");
+                g
+                    .style("display", null)
+                    .style("pointer-events", "none")
+                    .style("font", "10px sans-serif");
 
-  const path = g.selectAll("path")
-    .data([null])
-    .join("path")
-      .attr("fill", "white")
-      .attr("stroke", "black");
+                const path = g.selectAll("path")
+                    .data([null])
+                    .join("path")
+                    .attr("fill", "white")
+                    .attr("stroke", "black");
 
-  const text = g.selectAll("text")
-    .data([null])
-    .join("text")
-    .call(text => text
-      .selectAll("tspan")
-      .data((value + "").split(/\n/))
-      .join("tspan")
-        .attr("x", 0)
-        .attr("y", (d, i) => `${i * 1.1}em`)
-        .style("font-weight", (_, i) => i ? null : "bold")
-        .text(d => d));
+                const text = g.selectAll("text")
+                    .data([null])
+                    .join("text")
+                    .call(text => text
+                    .selectAll("tspan")
+                    .data((value + "").split(/\n/))
+                    .join("tspan")
+                        .attr("x", 0)
+                        .attr("y", (d, i) => `${i * 1.1}em`)
+                        .style("font-weight", (_, i) => i ? null : "bold")
+                        .text(d => d));
 
-  const {x, y, width: w, height: h} = text.node().getBBox();
+                const {x, y, width: w, height: h} = text.node().getBBox();
 
-  text.attr("transform", `translate(${-w / 2},${15 - y})`);
-  path.attr("d", `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`);
-}
+                text.attr("transform", `translate(${-w / 2},${15 - y})`);
+                path.attr("d", `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`);
+                }
             </script>
             <label for="begDate">Starting Period: </label>
 
