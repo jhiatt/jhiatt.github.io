@@ -164,20 +164,42 @@
                         .append('path')
                         .attr("class", "county")
                         .attr('d', path)
-                        // .on('mouseover', tip.show)
-                        // .on('mouseout', tip.hide)
                         .attr('stroke', 'black') //enable/disable this with an option?
                         .attr('stroke-width','.2px')
                         .style('fill', function(d) {
                             //data value
-                            var value = data.get(d.id); // ERROR
-                            console.log(value)
+                            var value = data.get(d.id); 
+
                             if(value) {
                                 return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
                             } else {
                                 return '#ccc'; // return gray if no value
                             }
                         })
+
+                        const tooltip = svg.append("g");
+                        format = d => `${d}%`;
+
+                        svg
+                        .selectAll(".county")
+                        .on("touchmove mousemove", function(event, d) {
+                            m = data.get(d.id)
+                            tooltip.call(
+                            callout,
+                            `${format(m[period_selection])}
+                        ${d.properties.NAME}` //, ${states.get(d.id.slice(0, 2)).name}
+                            );
+                            tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
+                            d3.select(this)
+                            .attr("stroke", "red")
+                            .raise();
+                        })
+                        .on("touchend mouseleave", function() {
+                            tooltip.call(callout, null);
+                            d3.select(this)
+                            .attr("stroke", null)
+                            .lower();
+                        });
                 })
 
                 //LOAD STATE DATA
@@ -192,7 +214,37 @@
 
             })
 
-            
+            callout = (g, value) => {
+                if (!value) return g.style("display", "none");
+
+                g
+                    .style("display", null)
+                    .style("pointer-events", "none")
+                    .style("font", "10px sans-serif");
+
+                const path = g.selectAll("path")
+                    .data([null])
+                    .join("path")
+                    .attr("fill", "white")
+                    .attr("stroke", "black");
+
+                const text = g.selectAll("text")
+                    .data([null])
+                    .join("text")
+                    .call(text => text
+                    .selectAll("tspan")
+                    .data((value + "").split(/\n/))
+                    .join("tspan")
+                        .attr("x", 0)
+                        .attr("y", (d, i) => `${i * 1.1}em`)
+                        .style("font-weight", (_, i) => i ? null : "bold")
+                        .text(d => d));
+
+                const {x, y, width: w, height: h} = text.node().getBBox();
+
+                text.attr("transform", `translate(${-w / 2},${15 - y})`);
+                path.attr("d", `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`);
+            }
             </script>
 
             
