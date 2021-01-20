@@ -119,165 +119,80 @@
             // add tool tips
             // svg.call(tip,);
 
- 
-
-            
-            // LOAD DATA
-            d3.json('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unempGeo.json').then(function(json) {
-                console.log(json)
-                json_map = d3.map(json)
-
-                // SET DATE RANGE
-                //look up sample date range (picked a random early one, not the first one, all data has been checked to ensure they have the same date range of data with NA's to fill the gaps)
-
-                // use date_range for looking up specific dates. Use position in array rather than values, dates should all be in the same order.
-                var date_range = [];
-                var json_data = json.features[5].properties.counties[0].value.data;
-
-                for (var i=0; i<json_data.length; i++) {
-                    date_range.push(json_data[i][1])
-                }
-
-                // these should be index numbers
-                var beg_date = 10
-                var end_date = date_range.length
-
-                // console.log(date_range.slice(beg_date,end_date))
-
-
-                // SIMPLIFY PATH DATA
-
-                // create a data object to store coordinates and unemployment info
-                var path_data = []
-
-                // note: we don't use the state data yet, we could flatten the incoming json data to just reside at the county level and add state info there.
-                for (var j=0; j<json.features.length; j++){
-                    var counties = json.features[j].properties.counties;
-                    for (var k=0; k<counties.length; k++) {
-
-                        // sum value and add it to county data
-                        // get the appropriate range of values for the correct periods
-                        var range = counties[k].value.data.slice(beg_date,end_date);
-
-                        // pull out only the values
-                        var range_values = []
-                        for (var l=0; l<range.length; l++){
-                            range_values.push(range[l][0]);
-                        }
-
-                        // sum to get single number
-                        var sum_range = range_values.reduce((a,b) => parseFloat(a)+parseFloat(b),0);
-
-                        // save to geojson
-                        counties[k].total_value = sum_range;
-                        path_data.push(counties[k])
-                    }
-                }
-
-                console.log(path_data)
-                path_map = d3.map(path_data)
-                // link data to color scale
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv').then(function(csv){
+                // load csv data
+                console.log(csv)
+                
+                //get min and max for setting color
                 color.domain([
-                    d3.min(path_data, function(d) { return d.total_value}),
-                    d3.max(path_data, function(d) { return d.total_value})
+                    d3.min(csv, function(d) { return d.Unemployment_rate}),
+                    d3.max(csv, function(d) { return d.Unemployment_rate})
                 ]);
 
-                
-                // not working, state lines not showing above county lines	
-                // svg.select("#map")
-                //         .data(json.features)	
-                //         .append('path')	
-                //         .attr('d', path)	
-                //         // .attr('stroke-width', '10px')	
-                //         .attr("stroke", "white")	
-                //         .attr('fill','none')
+                // selected period
+                let period_selection = 'Sep-19'
+
+                // save it to a map for easy look up
+                // this will create a map with fips as keys and an object containing rate information as the variables
+                var data = new Map()
+                for (var i=0; i<csv.length; i++) {
+                    // save each row to the map
+                    // the rate information is in the form of an object with peiod as keys.  If we add additional information we can substitute an array or object for the rate variable (keep the period as the key)
+                    let fips = csv[i].fips;
+                    if(data.has(fips)) { // if fips is already in the map
+                        obj = data.get(fips)
+                        obj[csv[i].Period]=csv[i].Unemployment_rate
+                    } else { // first fips
+                        data.set(fips,{[csv[i].Period]: csv[i].Unemployment_rate})
+                    }
+                }
+                console.log(data)
 
 
-
-                // Bind data to a single path with the GeoJason feature
-                svg
-                    .append("g")
-                    .attr("id", "map")
-                    .selectAll('path')
-                    .data(path_data)
-                    .enter()
-                    .append('path')
-                    .attr("class", "county")
-                    .attr('d', path)
-                    // .on('mouseover', tip.show)
-                    // .on('mouseout', tip.hide)
-                    .attr('stroke', 'black') //enable/disable this with an option?
-                    .attr('stroke-width','.2px')
-                    .style('fill', function(d) {
-                        //data value
-                        var value = d.total_value;
-
-                        if(value) {
-                            return color(value); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
-                        } else {
-                            return '#ccc'; // return gray if no value
-                        }
-                    })
-                    // .append('title')
-                    // .text((d) => 'County: ${d.properties.name}, ${d.total_value}')
-                
-                    const tooltip = svg.append("g");
+                //LOAD COUNTY DATA
+                var counties
+                d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(json) {
+                    counties = json
+                    console.log(counties)
 
                     svg
-                        .selectAll(".county")
-                        .on("touchmove mousemove", function(event, d) {
-                        tooltip.call(
-                    //         callout,
-                    //         `${format(path_map.get(d.id))}
-                    // ${d.properties.name}, ${json_map.get(d.id.slice(0, 2)).name}`
-                    //     );
-                    //     tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
-                        d3.select(this)
-                            .attr("stroke", "red")
-                            .raise();
+                        .append("g")
+                        .attr("id", "map")
+                        .selectAll('path')
+                        .data(counties.features)
+                        .enter()
+                        .append('path')
+                        .attr("class", "county")
+                        .attr('d', path)
+                        // .on('mouseover', tip.show)
+                        // .on('mouseout', tip.hide)
+                        .attr('stroke', 'black') //enable/disable this with an option?
+                        .attr('stroke-width','.2px')
+                        .style('fill', function(d) {
+                            //data value
+                            var value = data.get(d.id); // ERROR
+                            console.log(value)
+                            if(value) {
+                                return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                            } else {
+                                return '#ccc'; // return gray if no value
+                            }
                         })
-                        .on("touchend mouseleave", function() {
-                        tooltip.call(callout, null);
-                        d3.select(this)
-                            .attr("stroke", null)
-                            .lower();
-                        });             
-                
-            });
+                })
 
-            // import {callout} from @d3/line-chart-with-tooltip
-            format = d => `${d}%`
-            callout = (g, value) => {
-  if (!value) return g.style("display", "none");
+                //LOAD STATE DATA
+                var states = new Map()
+                d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(st_json) {
+                    console.log(st_json)
+                    // for (var j=0; j<csv.length; j++) {
+                        // states.set(csv[j].fips,)
+                    // }
+                })
+ 
 
-  g
-      .style("display", null)
-      .style("pointer-events", "none")
-      .style("font", "10px sans-serif");
+            })
 
-  const path = g.selectAll("path")
-    .data([null])
-    .join("path")
-      .attr("fill", "white")
-      .attr("stroke", "black");
-
-  const text = g.selectAll("text")
-    .data([null])
-    .join("text")
-    .call(text => text
-      .selectAll("tspan")
-      .data((value + "").split(/\n/))
-      .join("tspan")
-        .attr("x", 0)
-        .attr("y", (d, i) => `${i * 1.1}em`)
-        .style("font-weight", (_, i) => i ? null : "bold")
-        .text(d => d));
-
-  const {x, y, width: w, height: h} = text.node().getBBox();
-
-  text.attr("transform", `translate(${-w / 2},${15 - y})`);
-  path.attr("d", `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`);
-}
+            
             </script>
 
             
