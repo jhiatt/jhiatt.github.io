@@ -148,68 +148,74 @@
                 }
                 console.log(data)
 
-
-                //LOAD COUNTY DATA
-                var counties
-                d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(json) {
-                    counties = json
-                    console.log(counties)
-
-                    svg
-                        .append("g")
-                        .attr("id", "map")
-                        .selectAll('path')
-                        .data(counties.features)
-                        .enter()
-                        .append('path')
-                        .attr("class", "county")
-                        .attr('d', path)
-                        .attr('stroke', 'black') //enable/disable this with an option?
-                        .attr('stroke-width','.2px')
-                        .style('fill', function(d) {
-                            //data value
-                            var value = data.get(d.id); 
-
-                            if(value) {
-                                return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
-                            } else {
-                                return '#ccc'; // return gray if no value
-                            }
-                        })
-
-                        const tooltip = svg.append("g");
-                        format = d => `${d}%`;
-
-                        svg
-                        .selectAll(".county")
-                        .on("touchmove mousemove", function(event, d) {
-                            m = data.get(d.id)
-                            tooltip.call(
-                            callout,
-                            `${format(m[period_selection])}
-                        ${d.properties.NAME}` //, ${states.get(d.id.slice(0, 2)).name}
-                            );
-                            tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
-                            d3.select(this)
-                            .attr("stroke", "red")
-                            .raise();
-                        })
-                        .on("touchend mouseleave", function() {
-                            tooltip.call(callout, null);
-                            d3.select(this)
-                            .attr("stroke", null)
-                            .lower();
-                        });
-                })
-
                 //LOAD STATE DATA
                 var states = new Map()
-                d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(st_json) {
-                    console.log(st_json)
-                    // for (var j=0; j<csv.length; j++) {
-                        // states.set(csv[j].fips,)
-                    // }
+                d3.json('../d3/us-states.json').then(function(st_json) {
+                    var states = new Map()
+
+                    for (var i=0; i<st_json.features.length; i++) {
+                        // save each row to the map with fips as the id and state name as the value
+                        let id = st_json.features[i].id;
+                        states.set(id, st_json.features[i].properties.name)
+                    }
+
+
+                    //LOAD COUNTY DATA
+                    var counties
+                    d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(json) {
+                        counties = json
+                        console.log(counties)
+
+                        svg
+                            .append("g")
+                            .attr("id", "map")
+                            .selectAll('path')
+                            .data(counties.features)
+                            .enter()
+                            .append('path')
+                            .attr("class", "county")
+                            .attr('d', path)
+                            .attr('stroke', 'black') //enable/disable this with an option?
+                            .attr('stroke-width','.2px')
+                            .style('fill', function(d) {
+                                //data value
+                                var value = data.get(d.id); 
+
+                                if(value) {
+                                    return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                                } else {
+                                    return '#ccc'; // return gray if no value
+                                }
+                            })
+
+                            // add tooltips
+                            const tooltip = svg.append("g");
+                            format = d => `${d}%`;
+
+                            svg
+                            .selectAll(".county")
+                            .on("touchmove mousemove", function(event, d) {
+                                m = data.get(d.id)
+                                tooltip.call(
+                                callout,
+                                `Unemployment Rate: ${format(m[period_selection])}
+                            ${d.properties.NAME}, ${states.get(d.id.slice(0, 2))}` //, ${states.get(d.id.slice(0, 2)).name}
+                                );
+                                tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
+                                d3.select(this)
+                                .attr("stroke", "red")
+                                .raise();
+                            })
+                            .on("touchend mouseleave", function() {
+                                tooltip.call(callout, null);
+                                d3.select(this)
+                                .attr("stroke", 'black')
+                                .lower();
+                            });
+                    })
                 })
+
+
  
 
             })
