@@ -65,6 +65,9 @@
             - 
         -->
 
+        <label for="period">Select Period: </label>
+        <select name="period" id="period" onchange="set_period()"></select>
+
         <script type='text/javascript'>
             
             // SVG SETUP
@@ -85,73 +88,78 @@
             // Color
             var color = d3.scaleQuantize()
                           .range(['#fff7fb','#ece7f2','#d0d1e6','#a6bddb','#74a9cf','#3690c0','#0570b0','#045a8d','#023858']) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
-            
-            // set up tooltips
-            // thanks to Louise Whitaker http://bl.ocks.org/lwhitaker3/e8090246a20d9515789b
-            // var tip = d3.tip()
-            //     .attr('class', 'd3-tip')
-            //     .offset([-5, 0])
-            //     .html(function(d) {
-            //         console.log(d)
-            //         if (d) {
-            //             console.log(d);
-            //             return d.properties.name + ": " + d.total_value;
-            //         } else {
-            //             console.log("no dataRow", d);
-            //         //     return d.properties.name + ": No data.";
-            //         }
-            //     })
 
             // Create SVG element
             var svg = d3.select('body')
                         .append('svg')
-                        // .create("svg")
                         .attr("viewBox", [-margin, 0, width + margin, height + margin]);
+
+
+
+
+            // STATE VARIABLES
             
+            // general
+            var states = new Map();
+            var counties = {};
+            var period_selection = 'Sep-20';
+            var period_dropdown = document.getElementById('period');
+            
+            // unemployment
+            var data = new Map();
+            var periods_all = []; 
 
-            // set up legend
-            // svg
-            //     .append("g")
-            //     .attr("transform", "translate(610,20)")
-            //     .append(() => legend({ color, title: 'data.title', width: 260 }));    
+            // political
+            var pol_data_r = new Map();
+            var pol_data_d = new Map();
+            var pol_periods_all = [];
 
 
-            // add tool tips
-            // svg.call(tip,);
 
+
+            // LOAD DATA
+            // unemployment data
             d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv').then(function(csv){
                 // load csv data
-                console.log(csv)
+                // console.log(csv)
                 
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 //get min and max for setting color
                 color.domain([
                     d3.min(csv, function(d) { return d.Unemployment_rate}),
                     d3.max(csv, function(d) { return d.Unemployment_rate})
                 ]);
 
-                // selected period
-                let period_selection = 'Sep-19'
-
                 // save it to a map for easy look up
                 // this will create a map with fips as keys and an object containing rate information as the variables
-                var data = new Map()
+                // var data = new Map()
                 for (var i=0; i<csv.length; i++) {
                     // save each row to the map
                     // the rate information is in the form of an object with peiod as keys.  If we add additional information we can substitute an array or object for the rate variable (keep the period as the key)
                     let fips = csv[i].fips;
                     if(data.has(fips)) { // if fips is already in the map
                         obj = data.get(fips)
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         obj[csv[i].Period]=csv[i].Unemployment_rate
                     } else { // first fips
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         data.set(fips,{[csv[i].Period]: csv[i].Unemployment_rate})
                     }
                 }
-                console.log(data)
 
-                //LOAD STATE DATA
-                var states = new Map()
+
+                // PERIOD DROPDOWN
+                // rather than find the county with the most periods, I decided to stick with NYC's period selection.  My assumption is that a large city would be least likely to have missing monthly data. This could be a weakness down the road but seemed worth avoiding multiple large loops that would cost load time.
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                var unemp_county_sample = data.get('36061')
+                this.periods_all = Object.keys(unemp_county_sample)
+                create_period()
+
+                // console.log(data)
+
+                // state data
+                // var states = new Map()
                 d3.json('../d3/us-states.json').then(function(st_json) {
-                    var states = new Map()
 
                     for (var i=0; i<st_json.features.length; i++) {
                         // save each row to the map with fips as the id and state name as the value
@@ -160,66 +168,46 @@
                     }
 
 
-                    //LOAD COUNTY DATA
-                    var counties
+                    // county data
+                    // var counties
                     d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(json) {
                         counties = json
-                        console.log(counties)
+                        // console.log(counties)
 
-                        svg
-                            .append("g")
-                            .attr("id", "map")
-                            .selectAll('path')
-                            .data(counties.features)
-                            .enter()
-                            .append('path')
-                            .attr("class", "county")
-                            .attr('d', path)
-                            .attr('stroke', 'black') //enable/disable this with an option?
-                            .attr('stroke-width','.2px')
-                            .style('fill', function(d) {
-                                //data value
-                                var value = data.get(d.id); 
+                        generate_svg(data)
 
-                                if(value) {
-                                    return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
-                                } else {
-                                    return '#ccc'; // return gray if no value
-                                }
-                            })
-
-                            // add tooltips
-                            const tooltip = svg.append("g");
-                            format = d => `${d}%`;
-
-                            svg
-                            .selectAll(".county")
-                            .on("touchmove mousemove", function(event, d) {
-                                m = data.get(d.id)
-                                tooltip.call(
-                                callout,
-                                `Unemployment Rate: ${format(m[period_selection])}
-                            ${d.properties.NAME}, ${states.get(d.id.slice(0, 2))}` //, ${states.get(d.id.slice(0, 2)).name}
-                                );
-                                tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
-                                d3.select(this)
-                                .attr("stroke", "red")
-                                .raise();
-                            })
-                            .on("touchend mouseleave", function() {
-                                tooltip.call(callout, null);
-                                d3.select(this)
-                                .attr("stroke", 'black')
-                                .lower();
-                            });
                     })
                 })
+            })
 
 
- 
+            // Political data sources
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/pres-elect.csv').then(function(csv_elec) {
+                //   two data sources, republican focused and dem focused
+
+                pol_data_r
+                pol_data_d
+
+                // ????????? TRIGGER THIS WHEN BUTTON PRESSED
+                //get min and max for setting color
+                //??????????????? Will this replace the current values?
+                // color.domain([
+                //     d3.min(0),
+                //     d3.max(1)
+                // ]);
+
+                var pol_county_sample = data.get('36061')
+                this.pol_periods_all = Object.keys(pol_county_sample)
+                // create_period()
 
             })
 
+
+
+
+            // FUNCTIONS
+
+            // coppied directly from https://observablehq.com/@d3/line-chart-with-tooltip and used by https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
             callout = (g, value) => {
                 if (!value) return g.style("display", "none");
 
@@ -251,24 +239,135 @@
                 text.attr("transform", `translate(${-w / 2},${15 - y})`);
                 path.attr("d", `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`);
             }
-            </script>
 
+
+            // Set Period Dropdown Values
+            // selected period
             
-            <label for="begDate">Starting Period: </label>
+            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // dynamically pull posible period values from the text
+            function create_period() {
+                // create list in HTML
+                // var period_dropdown = document.getElementById('period')
+                this.period_dropdown.value = this.period_selection
 
-            <select name="begDate" id="begDate">
-              <!-- <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option> -->
-            </select>
-            <div>
-                <button>Unemployment Rate</button>
-                <button>Presidential Election</button>
-                <button>Population</button>
-            </div>
+                // set the options from the periods_all list
+                for (var i=0; i<this.periods_all.length; i++){
+                    var option = document.createElement('option')
+                    option.value = this.periods_all[i]
+                    option.text = this.periods_all[i]
+                    this.period_dropdown.appendChild(option)
+                    this.period_dropdown.value = this.period_selection
+                }
+                
+                set_period()
+            }
 
-            <h1>County Data Project</h1>
+            // set the period onchange of dropdown value
+            function set_period() {
+                this.period_selection = document.getElementById('period').value
+                let pd = this.period_selection
+
+                svg.selectAll('.county')
+                    .style('fill', function(d) {
+                        //data value
+                        var value = data.get(d.id); 
+
+                        if(value) {
+                            return color(value[pd]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                        } else {
+                            return '#ccc'; // return gray if no value
+                        }
+                    })
+                svg.select('#map').selectAll('.county').selectAll('g').remove()
+                // generate_tooltips()
+            }
+
+
+
+
+            // GENERATE SVG
+            // probably need to move these out to be global variables.
+            function generate_svg(data) {
+                svg
+                    .append("g")
+                    .attr("id", "map")
+                    .selectAll('path')
+                    .data(counties.features)
+                    .enter()
+                    .append('path')
+                    .attr("class", "county")
+                    .attr('d', path)
+                    .attr('stroke', 'black') //enable/disable this with an option?
+                    .attr('stroke-width','.2px')
+                    .style('fill', function(d) {
+                        //data value
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        var value = data.get(d.id); 
+
+                        if(value) {
+                            return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                        } else {
+                            return '#ccc'; // return gray if no value
+                        }
+                    })
+                generate_tooltips()
+            }
+
+            // generate tooltips
+            function generate_tooltips() {
+                // add tooltips
+                // adapted from https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
+                const tooltip = svg.append("g");
+                format = d => `${d}%`;
+            
+                svg
+                    .selectAll(".county") //select sections of path with county outline
+                    .on("touchmove mousemove", function(event, d) {
+                        m = data.get(d.id)
+                        tooltip_text(m,d,tooltip)
+                        tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
+                        d3.select(this)
+                        .attr("stroke", "red") //red outline of highlighted tooltip
+                        .raise();
+                    })
+                    .on("touchend mouseleave", function() {
+                        tooltip.call(callout, null);
+                        d3.select(this)
+                        .attr("stroke", 'black') // return to black outline
+                        .lower();
+                    });
+        
+            }
+
+            // generate tool tips
+            function tooltip_text(m,d,tooltip) {
+
+                if (m === undefined){
+                    tooltip.call(
+                    callout,
+                    `Unemployment Rate: Not Available
+                ${d.properties.NAME}, ${states.get(d.id.slice(0, 2))}` //format of the tooltip
+                    )
+                } else {
+                    tooltip.call(
+                    callout,
+                    `Unemployment Rate: ${format(m[this.period_selection])}
+                ${d.properties.NAME}, ${states.get(d.id.slice(0, 2))}` //format of the tooltip
+                    );
+                }
+            }
+        </script>
+
+        
+
+        <div>
+            <button>Unemployment Rate</button>
+            <button>Presidential Election</button>
+            <button>Population</button>
+        </div>
+
+        <h1>County Data Project</h1>
 
 
 
