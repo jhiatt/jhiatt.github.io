@@ -146,6 +146,7 @@
                         data.set(fips,{[csv[i].Period]: csv[i].Unemployment_rate})
                     }
                 }
+                console.log(data)
 
 
                 // PERIOD DROPDOWN
@@ -185,8 +186,33 @@
             d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/pres-elect.csv').then(function(csv_elec) {
                 //   two data sources, republican focused and dem focused
 
-                pol_data_r
-                pol_data_d
+                // set up pol_data_r
+                for (var i=0; i<csv_elec.length; i++) {
+                    // save each row to the map
+                    // the rate information is in the form of an object with peiod as keys.  If we add additional information we can substitute an array or object for the rate variable (keep the period as the key)
+                    let fips = csv_elec[i].fips;
+                    if(pol_data_r.has(fips)) { // if fips is already in the map
+                        obj = pol_data_r.get(fips)
+                        obj[csv_elec[i].year]=csv_elec[i].rep_share
+                    } else { // first fips!
+                        pol_data_r.set(fips,{[csv_elec[i].year]: csv_elec[i].rep_share})
+                    }
+                }
+                console.log(pol_data_r)
+
+                // set up pol_data_d
+                for (var i=0; i<csv_elec.length; i++) {
+                    // save each row to the map
+                    // the rate information is in the form of an object with peiod as keys.  If we add additional information we can substitute an array or object for the rate variable (keep the period as the key)
+                    let fips = csv_elec[i].fips;
+                    if(pol_data_d.has(fips)) { // if fips is already in the map
+                        obj = pol_data_d.get(fips)
+                        obj[csv_elec[i].year]=csv_elec[i].dem_share
+                    } else { // first fips!
+                        pol_data_d.set(fips,{[csv_elec[i].year]: csv_elec[i].dem_share})
+                    }
+                }
+                console.log(pol_data_d)
 
                 // ????????? TRIGGER THIS WHEN BUTTON PRESSED
                 //get min and max for setting color
@@ -196,8 +222,9 @@
                 //     d3.max(1)
                 // ]);
 
-                var pol_county_sample = data.get('36061')
+                var pol_county_sample = pol_data_r.get('36061')
                 this.pol_periods_all = Object.keys(pol_county_sample)
+                console.log(this.pol_periods_all)
                 // create_period()
 
             })
