@@ -68,6 +68,15 @@
         <label for="period">Select Period: </label>
         <select name="period" id="period" onchange="set_period()"></select>
 
+
+        <div>
+            <button onclick="set_data('unp')">Unemployment Rate</button>
+            <button onclick="set_data('pol_r')">Presidential Republican Vote %</button>
+            <button onclick="set_data('pol_d')">Presidential Democratic Vote %</button>
+        </div>
+
+
+
         <script type='text/javascript'>
             
             // SVG SETUP
@@ -85,9 +94,6 @@
             var path = d3.geoPath()
                          .projection(projection);
             
-            // Color
-            var color = d3.scaleQuantize()
-                          .range(['#fff7fb','#ece7f2','#d0d1e6','#a6bddb','#74a9cf','#3690c0','#0570b0','#045a8d','#023858']) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
 
             // Create SVG element
             var svg = d3.select('body')
@@ -104,17 +110,31 @@
             var counties = {};
             var period_selection = 'Sep-20';
             var period_dropdown = document.getElementById('period');
+            var color = d3.scaleQuantize();
+            var var_name = 'Unemployment Rate';
+            var data = new Map();
             
             // unemployment
-            var data = new Map();
+            var ump_data = new Map();
             var periods_all = []; 
+            // color
+            var up_color = ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b']; //thanks https://colorbrewer2.org/#type=sequential&scheme=BuPu&n=9
+            var up_min = 0;
+            var up_max = 0;
 
             // political
             var pol_data_r = new Map();
             var pol_data_d = new Map();
             var pol_periods_all = [];
+            // color
+            var pol_col_r = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d']; //thanks https://colorbrewer2.org/#type=sequential&scheme=Reds&n=9
+            var pol_col_d = ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b']; //thanks https://colorbrewer2.org/#type=sequential&scheme=Blues&n=9
 
 
+//                         // Color
+//                         var color = d3.scaleQuantize()
+//                           .range(up_color) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
+// // ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b']
 
 
             // LOAD DATA
@@ -122,13 +142,10 @@
             d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv').then(function(csv){
                 // load csv data
                 // console.log(csv)
-                
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                //get min and max for setting color
-                color.domain([
-                    d3.min(csv, function(d) { return d.Unemployment_rate}),
-                    d3.max(csv, function(d) { return d.Unemployment_rate})
-                ]);
+
+                // get min and max for color scale
+                this.up_min = d3.min(csv, function(d) { return d.Unemployment_rate}),
+                this.up_max = d3.max(csv, function(d) { return d.Unemployment_rate})
 
                 // save it to a map for easy look up
                 // this will create a map with fips as keys and an object containing rate information as the variables
@@ -137,16 +154,18 @@
                     // save each row to the map
                     // the rate information is in the form of an object with peiod as keys.  If we add additional information we can substitute an array or object for the rate variable (keep the period as the key)
                     let fips = csv[i].fips;
-                    if(data.has(fips)) { // if fips is already in the map
-                        obj = data.get(fips)
+                    if(this.ump_data.has(fips)) { // if fips is already in the map
+                        obj = this.ump_data.get(fips)
                         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         obj[csv[i].Period]=csv[i].Unemployment_rate
                     } else { // first fips
                         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        data.set(fips,{[csv[i].Period]: csv[i].Unemployment_rate})
+                        this.ump_data.set(fips,{[csv[i].Period]: csv[i].Unemployment_rate})
                     }
                 }
-                console.log(data)
+
+                this.data = this.ump_data
+                console.log(this.data)
 
 
                 // PERIOD DROPDOWN
@@ -198,7 +217,7 @@
                         pol_data_r.set(fips,{[csv_elec[i].year]: csv_elec[i].rep_share})
                     }
                 }
-                console.log(pol_data_r)
+                // console.log(pol_data_r)
 
                 // set up pol_data_d
                 for (var i=0; i<csv_elec.length; i++) {
@@ -212,19 +231,11 @@
                         pol_data_d.set(fips,{[csv_elec[i].year]: csv_elec[i].dem_share})
                     }
                 }
-                console.log(pol_data_d)
-
-                // ????????? TRIGGER THIS WHEN BUTTON PRESSED
-                //get min and max for setting color
-                //??????????????? Will this replace the current values?
-                // color.domain([
-                //     d3.min(0),
-                //     d3.max(1)
-                // ]);
+                // console.log(pol_data_d)
 
                 var pol_county_sample = pol_data_r.get('36061')
                 this.pol_periods_all = Object.keys(pol_county_sample)
-                console.log(this.pol_periods_all)
+                // console.log(this.pol_periods_all)
                 // create_period()
 
             })
@@ -267,24 +278,31 @@
                 path.attr("d", `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`);
             }
 
-
-            // Set Period Dropdown Values
-            // selected period
             
-            //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // dynamically pull posible period values from the text
             function create_period() {
+                // first remove any existing dropdown options
+                while (this.period_dropdown.firstChild) { // solution borrowed from https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
+                    this.period_dropdown.removeChild(this.period_dropdown.firstChild);
+                }
                 // create list in HTML
-                // var period_dropdown = document.getElementById('period')
-                this.period_dropdown.value = this.period_selection
-
-                // set the options from the periods_all list
-                for (var i=0; i<this.periods_all.length; i++){
-                    var option = document.createElement('option')
-                    option.value = this.periods_all[i]
-                    option.text = this.periods_all[i]
-                    this.period_dropdown.appendChild(option)
-                    this.period_dropdown.value = this.period_selection
+                if (this.data === this.ump_data) {
+                    // set the options from the periods_all list
+                    for (var i=0; i<this.periods_all.length; i++){
+                        var option = document.createElement('option')
+                        option.value = this.periods_all[i]
+                        option.text = this.periods_all[i]
+                        this.period_dropdown.appendChild(option)
+                        this.period_dropdown.value = this.period_selection
+                    }
+                } else if (this.data == this.pol_data_r | this.data == this.pol_data_d) {
+                    for (var i=0; i<this.pol_periods_all.length; i++){
+                        var option = document.createElement('option')
+                        option.value = this.pol_periods_all[i]
+                        option.text = this.pol_periods_all[i]
+                        this.period_dropdown.appendChild(option)
+                        this.period_dropdown.value = this.period_selection
+                    }
                 }
                 
                 set_period()
@@ -294,6 +312,9 @@
             function set_period() {
                 this.period_selection = document.getElementById('period').value
                 let pd = this.period_selection
+                
+                // use the color attributes already in place
+                let color = this.color 
 
                 svg.selectAll('.county')
                     .style('fill', function(d) {
@@ -301,13 +322,64 @@
                         var value = data.get(d.id); 
 
                         if(value) {
+                            // console.log(value[pd])
                             return color(value[pd]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
                         } else {
                             return '#ccc'; // return gray if no value
                         }
                     })
-                svg.select('#map').selectAll('.county').selectAll('g').remove()
-                // generate_tooltips()
+            }
+
+            // triggered by button onclick (data set selection buttons)
+            function set_data(data_source) {
+                // source is the loaded data source
+                // period is the default period
+                let color = this.color
+                console.log(this.data == this.ump_data)
+
+
+                // add a class (to selected button) here to show what's selected
+                if (data_source === 'pol_r'){
+                    this.data = pol_data_r
+                    console.log(this.data == this.pol_data_r)
+
+
+                    this.period_selection = '2016'
+                    color.range(pol_col_r)
+                    color.domain([0,1]) // set min max to 0 and 1 (percentage)
+                    this.var_name = 'Voting Republican'
+                } else if (data_source === 'pol_d'){
+                    this.data = pol_data_d
+                    this.period_selection = '2016'
+                    color.range(pol_col_d)
+                    color.domain([0,1]) // set min max to 0 and 1 (percentage)
+                    this.var_name = 'Voting Democrat'
+                } else if (data_source === 'unp'){
+                    this.data = ump_data
+                    this.period_selection = 'Sep-20'
+                    color.range(up_color)
+                    color.domain([up_min,up_max]) // set min max to 0 and 1 (percentage)
+                    this.var_name = 'Unemployment Rate'
+                }
+
+                // create new dropdown list
+                create_period()
+
+                if(this.data) ///  WHAT IS THIS FOR??????????????????????????????????
+                data = this.data
+                svg.selectAll('.county')
+                .style('fill', function(d) {
+                        //data value
+                        var value = data.get(d.id); 
+                        
+                        if(value) {
+                            // console.log(value[this.period_selection])
+                            return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                        } else {
+                            return '#ccc'; // return gray if no value
+                        }
+                    })
+                // svg.select('#map').selectAll('.county').selectAll('g').remove()
             }
 
 
@@ -316,6 +388,15 @@
             // GENERATE SVG
             // probably need to move these out to be global variables.
             function generate_svg(data) {
+                this.color.range(up_color) 
+                
+                //get min and max for setting color
+                this.color.domain([
+                    this.up_min,
+                    this.up_max
+                ]);
+                let color = this.color
+
                 svg
                     .append("g")
                     .attr("id", "map")
@@ -345,14 +426,14 @@
             function generate_tooltips() {
                 // add tooltips
                 // adapted from https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
-                const tooltip = svg.append("g");
-                format = d => `${d}%`;
+                data = this.data
+                var tooltip = svg.append("g");
+                format = d => `${this.data == this.ump_data ? (parseFloat(d)).toFixed(2) : (parseFloat(d)*100).toFixed(2)}%`;
             
                 svg
                     .selectAll(".county") //select sections of path with county outline
                     .on("touchmove mousemove", function(event, d) {
-                        m = data.get(d.id)
-                        tooltip_text(m,d,tooltip)
+                        tooltip_text(d,tooltip,data)
                         tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
                         d3.select(this)
                         .attr("stroke", "red") //red outline of highlighted tooltip
@@ -367,32 +448,40 @@
         
             }
 
-            // generate tool tips
-            function tooltip_text(m,d,tooltip) {
-
+            // add text to tool tips
+            function tooltip_text(d,tooltip,data) {
+                m = data.get(d.id)
                 if (m === undefined){
                     tooltip.call(
                     callout,
-                    `Unemployment Rate: Not Available
+                    `${var_name}: Not Available
                 ${d.properties.NAME}, ${states.get(d.id.slice(0, 2))}` //format of the tooltip
                     )
                 } else {
                     tooltip.call(
                     callout,
-                    `Unemployment Rate: ${format(m[this.period_selection])}
+                    `${var_name}: ${format(m[this.period_selection])}
                 ${d.properties.NAME}, ${states.get(d.id.slice(0, 2))}` //format of the tooltip
                     );
                 }
+            }
+
+            // NOT USED!!!!!!!!!!!!!!!!!!!!!!!
+            //set color
+            function set_color(color,min,max) {
+                this.color
+                    .range(color) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
+
+                //get min and max for setting color
+                this.color.domain([
+                    this.min,
+                    this.max
+                ]);
             }
         </script>
 
         
 
-        <div>
-            <button>Unemployment Rate</button>
-            <button>Presidential Election</button>
-            <button>Population</button>
-        </div>
 
         <h1>County Data Project</h1>
 
