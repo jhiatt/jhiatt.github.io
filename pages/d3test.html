@@ -73,6 +73,7 @@
             <button onclick="set_data('unp')">Unemployment Rate</button>
             <button onclick="set_data('pol_r')">Presidential Republican Vote %</button>
             <button onclick="set_data('pol_d')">Presidential Democratic Vote %</button>
+            <button onclick="set_data('pop')">Population Estimates</button>
         </div>
 
 
@@ -130,6 +131,10 @@
             var pol_col_r = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d']; //thanks https://colorbrewer2.org/#type=sequential&scheme=Reds&n=9
             var pol_col_d = ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b']; //thanks https://colorbrewer2.org/#type=sequential&scheme=Blues&n=9
 
+            // population
+            var pop_data = new Map();
+            var pop_color = ['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529']; //https://colorbrewer2.org/#type=sequential&scheme=YlGn&n=9
+
 
 //                         // Color
 //                         var color = d3.scaleQuantize()
@@ -165,7 +170,7 @@
                 }
 
                 this.data = this.ump_data
-                console.log(this.data)
+                // console.log(this.data)
 
 
                 // PERIOD DROPDOWN
@@ -235,9 +240,30 @@
 
                 var pol_county_sample = pol_data_r.get('36061')
                 this.pol_periods_all = Object.keys(pol_county_sample)
-                // console.log(this.pol_periods_all)
-                // create_period()
 
+            })
+
+
+            // Population data sources
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/pop_data.csv').then(function(csv_pop){
+
+                for(let i=0; i < csv_pop.length; i++){
+                    pop_data.set(csv_pop[i].fips,{
+                        2010: csv_pop[i].POPESTIMATE2010,
+                        2011: csv_pop[i].POPESTIMATE2011,
+                        2012: csv_pop[i].POPESTIMATE2012,
+                        2013: csv_pop[i].POPESTIMATE2013,
+                        2014: csv_pop[i].POPESTIMATE2014,
+                        2015: csv_pop[i].POPESTIMATE2015,
+                        2016: csv_pop[i].POPESTIMATE2016,
+                        2017: csv_pop[i].POPESTIMATE2017,
+                        2018: csv_pop[i].POPESTIMATE2018,
+                        2019: csv_pop[i].POPESTIMATE2019
+                    })
+                }
+                console.log(pop_data)
+                var pop_county_sample = pop_data.get('36061')
+                this.pop_periods_all = Object.keys(pop_county_sample)
             })
 
 
@@ -286,25 +312,25 @@
                     this.period_dropdown.removeChild(this.period_dropdown.firstChild);
                 }
                 // create list in HTML
+                let pds = []
+                // find list of relavent periods
                 if (this.data === this.ump_data) {
-                    // set the options from the periods_all list
-                    for (var i=0; i<this.periods_all.length; i++){
-                        var option = document.createElement('option')
-                        option.value = this.periods_all[i]
-                        option.text = this.periods_all[i]
-                        this.period_dropdown.appendChild(option)
-                        this.period_dropdown.value = this.period_selection
-                    }
+                    pds = this.periods_all
                 } else if (this.data == this.pol_data_r | this.data == this.pol_data_d) {
-                    for (var i=0; i<this.pol_periods_all.length; i++){
+                    pds = this.pol_periods_all
+                } else if (this.data == this.pop_data){
+                    pds = pop_periods_all
+                }
+
+                // set the options from the periods_all list
+                for (var i=0; i<pds.length; i++){
                         var option = document.createElement('option')
-                        option.value = this.pol_periods_all[i]
-                        option.text = this.pol_periods_all[i]
+                        option.value = pds[i]
+                        option.text = pds[i]
                         this.period_dropdown.appendChild(option)
                         this.period_dropdown.value = this.period_selection
                     }
-                }
-                
+
                 set_period()
             }
 
@@ -335,15 +361,10 @@
                 // source is the loaded data source
                 // period is the default period
                 let color = this.color
-                console.log(this.data == this.ump_data)
-
 
                 // add a class (to selected button) here to show what's selected
                 if (data_source === 'pol_r'){
                     this.data = pol_data_r
-                    console.log(this.data == this.pol_data_r)
-
-
                     this.period_selection = '2016'
                     color.range(pol_col_r)
                     color.domain([0,1]) // set min max to 0 and 1 (percentage)
@@ -360,25 +381,32 @@
                     color.range(up_color)
                     color.domain([up_min,up_max]) // set min max to 0 and 1 (percentage)
                     this.var_name = 'Unemployment Rate'
+                } else if (data_source === 'pop'){
+                    this.data = pop_data
+                    this.period_selection = '2019'
+                    color.range(pop_color)
+                    color.domain([0,11000000]) // set min max to 0 and 1 (percentage)
+                    this.var_name = 'Population'
                 }
-
+                console.log(this.period_selection)
+                
                 // create new dropdown list
                 create_period()
-
-                if(this.data) ///  WHAT IS THIS FOR??????????????????????????????????
+                console.log(this.period_selection)
                 data = this.data
                 svg.selectAll('.county')
                 .style('fill', function(d) {
-                        //data value
-                        var value = data.get(d.id); 
-                        
-                        if(value) {
+                    //data value
+                    var value = data.get(d.id); 
+                    
+                    if(value) {
+                            // console.log(period_selection)
                             // console.log(value[this.period_selection])
                             return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
-                        } else {
-                            return '#ccc'; // return gray if no value
-                        }
-                    })
+                    } else {
+                        return '#ccc'; // return gray if no value
+                    }
+                })
                 // svg.select('#map').selectAll('.county').selectAll('g').remove()
             }
 
