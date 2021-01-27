@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+<!--       <link type="text/css" rel="stylesheet" href="../css/pages.css"  media="screen,projection"/>
+ -->      
+      <title>D3 Test</title>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <link rel="shortcut icon" href="../images/bike-favicon.ico" type="image/x-icon">
+
+      <!-- link to d3 -->
+      <script type='text/javascript' src="../d3/d3.js"></script>
+      <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+      <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+      <style>
+        .d3-tip {
+            line-height: 1;
+            padding: 12px;
+            background: rgba(43,43,43, 0.8);
+            color: #fff;
+            border-radius: 2px;
+        }
+      </style>
+    </head>
+
+    <body class="case-study">
+        <nav class="my-nav">
+            <span class="small-nav" id="hamburger">
+            <img src=".././images/hamburger-menue-icon.png" class=".small-nav" height="30" width="30" alt="">
+            </span>
+            <span class="big-nav" id="nav-span">
+            
+            <span class="nav-body">
+                <a href="./../index.html">Home</a>
+                <a href="mailto:jordanhiattcodes@gmail.com">Contact Me</a>
+                <a href="../images/jordan-resume DME.pdf" download>Resume</a>
+
+            </span>
+            <span class="nav-side">
+                <a href="https://github.com/jhiatt" target="_blank">
+                <img src="./../images/GitHub-logo-square.png" alt="Github Profile" height="30" width="30" />
+                </a>
+                <a href="https://www.linkedin.com/in/jordanhiatt/" target="_blank">
+                <img src="./../images/ln-black.png" alt="LinkedIn Profile" height="30" width="30" />
+                </a>
+                <a href="https://medium.com/@jhiatt" target="_blank">
+                <img src="./../images/medium-monogram.png" alt="Medium Blog" height="30" width="30" />
+                </a>
+        <!--             <a target="_blank" href="">Design Make Experiment</a>  -->          
+            </span>
+            </span>
+        </nav>
+
+
+        <!-- NOTES:
+            - helpful article: https://observablehq.com/@d3/zoom-to-bounding-box 
+            - https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
+            - start local server: "python -m http.server 8888 &." launches http://localhost:8888/
+            - 
+        -->
+
+        <label for="period">Select Period: </label>
+        <select name="period" id="period" onchange="set_period()"></select>
+
+
+        <div>
+            <button onclick="set_data('unp')">Unemployment Rate</button>
+            <button onclick="set_data('pol_r')">Presidential Republican Vote</button>
+            <button onclick="set_data('pol_d')">Presidential Democratic Vote</button>
+            <button onclick="set_data('pop')">Population Estimates</button>
+        </div>
+
+
+
+        <script type='text/javascript'>
+            
+            // SVG SETUP
+            // Establish the svg parameters
+            const width = 1000;
+            const height = 600;
+            const margin = 10;
+            
+            // Projection
+            var projection = d3.geoAlbersUsa()
+                               .translate([width/2, height/2]) //translate to move everything to the middle
+            //    .scale([500]) //defalut scale for projection is 1000
+            
+            // Path
+            var path = d3.geoPath()
+                         .projection(projection);
+            
+
+            // Create SVG element
+            var svg = d3.select('body')
+                        .append('svg')
+                        .attr("viewBox", [-margin, 0, width + margin, height + margin]);
+
+
+
+
+            // STATE VARIABLES
+            
+            // general
+            var states = new Map();
+            var counties = {};
+            var period_selection = 'Sep-20';
+            var period_dropdown = document.getElementById('period');
+            var color = d3.scaleQuantize();
+            var var_name = 'Unemployment Rate';
+            var data = new Map();
+            
+            // unemployment
+            var ump_data = new Map();
+            var periods_all = []; 
+            // color
+            var up_color = ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b']; //thanks https://colorbrewer2.org/#type=sequential&scheme=BuPu&n=9
+            var up_min = 0;
+            var up_max = 0;
+
+            // political
+            var pol_data_r = new Map();
+            var pol_data_d = new Map();
+            var pol_periods_all = [];
+            // color
+            var pol_col_r = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d']; //thanks https://colorbrewer2.org/#type=sequential&scheme=Reds&n=9
+            var pol_col_d = ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b']; //thanks https://colorbrewer2.org/#type=sequential&scheme=Blues&n=9
+            var pol_min = 0;
+            var pol_max = 0;
+
+            // population
+            var pop_data = new Map();
+            var pop_color = ['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529']; //https://colorbrewer2.org/#type=sequential&scheme=YlGn&n=9
+
+
+//                         // Color
+//                         var color = d3.scaleQuantize()
+//                           .range(up_color) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
+// // ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b']
+
+
+            // LOAD DATA
+            // unemployment data
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv').then(function(csv){
+                // load csv data
+                // console.log(csv)
+
+                // get min and max for color scale
+                this.up_min = d3.min(csv, function(d) { return d.Unemployment_rate}),
+                this.up_max = d3.max(csv, function(d) { return d.Unemployment_rate})
+
+                // save it to a map for easy look up
+                // this will create a map with fips as keys and an object containing rate information as the variables
+                // var data = new Map()
+                for (var i=0; i<csv.length; i++) {
+                    // save each row to the map
+                    // the rate information is in the form of an object with peiod as keys.  If we add additional information we can substitute an array or object for the rate variable (keep the period as the key)
+                    let fips = csv[i].fips;
+                    if(this.ump_data.has(fips)) { // if fips is already in the map
+                        obj = this.ump_data.get(fips)
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        obj[csv[i].Period]=csv[i].Unemployment_rate
+                    } else { // first fips
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        this.ump_data.set(fips,{[csv[i].Period]: csv[i].Unemployment_rate})
+                    }
+                }
+
+                this.data = this.ump_data
+                // console.log(this.data)
+
+
+                // PERIOD DROPDOWN
+                // rather than find the county with the most periods, I decided to stick with NYC's period selection.  My assumption is that a large city would be least likely to have missing monthly data. This could be a weakness down the road but seemed worth avoiding multiple large loops that would cost load time.
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                var unemp_county_sample = data.get('36061')
+                this.periods_all = Object.keys(unemp_county_sample)
+                create_period()
+
+                // console.log(data)
+
+                // state data
+                // var states = new Map()
+                d3.json('../d3/us-states.json').then(function(st_json) {
+
+                    for (var i=0; i<st_json.features.length; i++) {
+                        // save each row to the map with fips as the id and state name as the value
+                        let id = st_json.features[i].id;
+                        states.set(id, st_json.features[i].properties.name)
+                    }
+
+
+                    // county data
+                    // var counties
+                    d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(json) {
+                        counties = json
+                        // console.log(counties)
+
+                        generate_svg(data)
+
+                    })
+                })
+            })
+
+
+            // Political data sources
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/pres-elect.csv').then(function(csv_elec) {
+                //   two data sources, republican focused and dem focused
+
+                // set up pol_data_r
+                for (var i=0; i<csv_elec.length; i++) {
+                    // save each row to the map
+                    // the rate information is in the form of an object with peiod as keys.  If we add additional information we can substitute an array or object for the rate variable (keep the period as the key)
+                    let fips = csv_elec[i].fips;
+                    if(pol_data_r.has(fips)) { // if fips is already in the map
+                        obj = pol_data_r.get(fips)
+                        obj[csv_elec[i].year]=csv_elec[i].republican_votes
+                    } else { // first fips!
+                        pol_data_r.set(fips,{[csv_elec[i].year]: csv_elec[i].republican_votes})
+                    }
+                }
+                // console.log(pol_data_r)
+
+                // set up pol_data_d
+                for (var i=0; i<csv_elec.length; i++) {
+                    // save each row to the map
+                    // the rate information is in the form of an object with peiod as keys.  If we add additional information we can substitute an array or object for the rate variable (keep the period as the key)
+                    let fips = csv_elec[i].fips;
+                    if(pol_data_d.has(fips)) { // if fips is already in the map
+                        obj = pol_data_d.get(fips)
+                        obj[csv_elec[i].year]=csv_elec[i].democrat_votes
+                    } else { // first fips!
+                        pol_data_d.set(fips,{[csv_elec[i].year]: csv_elec[i].democrat_votes})
+                    }
+                }
+                // console.log(pol_data_d)
+
+                var pol_county_sample = pol_data_r.get('36061')
+                this.pol_periods_all = Object.keys(pol_county_sample)
+
+                // get min and max for color scale
+                // Dem and Rep need the same min and max values for comparability
+
+                // dem min max
+                let dem_min = d3.min(csv_elec, function(d) { return d.democrat_votes})
+                let dem_max = d3.max(csv_elec, function(d) { return d.democrat_votes})
+
+                // rep min max
+                let rep_min = d3.min(csv_elec, function(d) { return d.republican_votes})
+                let rep_max = d3.max(csv_elec, function(d) { return d.republican_votes})
+
+                // select smaller value
+                this.pol_min = rep_min < dem_min ? rep_min : dem_min;
+                // select larger value
+                this.pol_max = rep_max > dem_max ? rep_max : dem_max;
+                console.log(dem_min)
+                console.log(rep_min)
+                console.log(this.pol_min)
+                console.log(dem_max)
+                console.log(rep_max)
+                console.log(this.pol_max)
+
+            })
+
+
+            // Population data sources
+            d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/pop_data.csv').then(function(csv_pop){
+
+                for(let i=0; i < csv_pop.length; i++){
+                    pop_data.set(csv_pop[i].fips,{
+                        2010: csv_pop[i].POPESTIMATE2010,
+                        2011: csv_pop[i].POPESTIMATE2011,
+                        2012: csv_pop[i].POPESTIMATE2012,
+                        2013: csv_pop[i].POPESTIMATE2013,
+                        2014: csv_pop[i].POPESTIMATE2014,
+                        2015: csv_pop[i].POPESTIMATE2015,
+                        2016: csv_pop[i].POPESTIMATE2016,
+                        2017: csv_pop[i].POPESTIMATE2017,
+                        2018: csv_pop[i].POPESTIMATE2018,
+                        2019: csv_pop[i].POPESTIMATE2019
+                    })
+                }
+                console.log(pop_data)
+                var pop_county_sample = pop_data.get('36061')
+                this.pop_periods_all = Object.keys(pop_county_sample)
+            })
+
+
+
+
+            // FUNCTIONS
+
+            // coppied directly from https://observablehq.com/@d3/line-chart-with-tooltip and used by https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
+            callout = (g, value) => {
+                if (!value) return g.style("display", "none");
+
+                g
+                    .style("display", null)
+                    .style("pointer-events", "none")
+                    .style("font", "10px sans-serif");
+
+                const path = g.selectAll("path")
+                    .data([null])
+                    .join("path")
+                    .attr("fill", "white")
+                    .attr("stroke", "black");
+
+                const text = g.selectAll("text")
+                    .data([null])
+                    .join("text")
+                    .call(text => text
+                    .selectAll("tspan")
+                    .data((value + "").split(/\n/))
+                    .join("tspan")
+                        .attr("x", 0)
+                        .attr("y", (d, i) => `${i * 1.1}em`)
+                        .style("font-weight", (_, i) => i ? null : "bold")
+                        .text(d => d));
+
+                const {x, y, width: w, height: h} = text.node().getBBox();
+
+                text.attr("transform", `translate(${-w / 2},${15 - y})`);
+                path.attr("d", `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`);
+            }
+
+            
+            // dynamically pull posible period values from the text
+            function create_period() {
+                // first remove any existing dropdown options
+                while (this.period_dropdown.firstChild) { // solution borrowed from https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
+                    this.period_dropdown.removeChild(this.period_dropdown.firstChild);
+                }
+                // create list in HTML
+                let pds = []
+                // find list of relavent periods
+                if (this.data === this.ump_data) {
+                    pds = this.periods_all
+                } else if (this.data == this.pol_data_r | this.data == this.pol_data_d) {
+                    pds = this.pol_periods_all
+                } else if (this.data == this.pop_data){
+                    pds = pop_periods_all
+                }
+
+                // set the options from the periods_all list
+                for (var i=0; i<pds.length; i++){
+                        var option = document.createElement('option')
+                        option.value = pds[i]
+                        option.text = pds[i]
+                        this.period_dropdown.appendChild(option)
+                        this.period_dropdown.value = this.period_selection
+                    }
+
+                set_period()
+            }
+
+            // set the period onchange of dropdown value
+            function set_period() {
+                this.period_selection = document.getElementById('period').value
+                let pd = this.period_selection
+                
+                // use the color attributes already in place
+                let color = this.color 
+
+                svg.selectAll('.county')
+                    .style('fill', function(d) {
+                        //data value
+                        var value = data.get(d.id); 
+
+                        if(value) {
+                            // console.log(value[pd])
+                            return color(value[pd]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                        } else {
+                            return '#ccc'; // return gray if no value
+                        }
+                    })
+            }
+
+            // triggered by button onclick (data set selection buttons)
+            function set_data(data_source) {
+                // source is the loaded data source
+                // period is the default period
+                let color = this.color
+
+                // add a class (to selected button) here to show what's selected
+                if (data_source === 'pol_r'){
+                    this.data = pol_data_r
+                    this.period_selection = '2016'
+                    color.range(pol_col_r)
+                    color.domain([0,this.pol_max]) // set min max to 0 and 1 (percentage)
+                    this.var_name = 'Voted Republican'
+                } else if (data_source === 'pol_d'){
+                    this.data = pol_data_d
+                    this.period_selection = '2016'
+                    color.range(pol_col_d)
+                    color.domain([0,this.pol_max]) // set min max to 0 and 1 (percentage)
+                    this.var_name = 'Voted Democrat'
+                } else if (data_source === 'unp'){
+                    this.data = ump_data
+                    this.period_selection = 'Sep-20'
+                    color.range(up_color)
+                    color.domain([up_min,up_max]) // set min max to 0 and 1 (percentage)
+                    this.var_name = 'Unemployment Rate'
+                } else if (data_source === 'pop'){
+                    this.data = pop_data
+                    this.period_selection = '2019'
+                    color.range(pop_color)
+                    color.domain([0,500000]) // set min to 0 and max to 500,000 (any higher and everything is blank except LA and several cities)
+                    this.var_name = 'Population'
+                }
+                console.log(this.period_selection)
+                
+                // create new dropdown list
+                create_period()
+                console.log(this.period_selection)
+                data = this.data
+                svg.selectAll('.county')
+                .style('fill', function(d) {
+                    //data value
+                    var value = data.get(d.id); 
+                    
+                    if(value) {
+                            // console.log(period_selection)
+                            // console.log(value[this.period_selection])
+                            return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                    } else {
+                        return '#ccc'; // return gray if no value
+                    }
+                })
+                // svg.select('#map').selectAll('.county').selectAll('g').remove()
+            }
+
+
+
+
+            // GENERATE SVG
+            // probably need to move these out to be global variables.
+            function generate_svg(data) {
+                this.color.range(up_color) 
+                
+                //get min and max for setting color
+                this.color.domain([
+                    this.up_min,
+                    this.up_max
+                ]);
+                let color = this.color
+
+                svg
+                    .append("g")
+                    .attr("id", "map")
+                    .selectAll('path')
+                    .data(counties.features)
+                    .enter()
+                    .append('path')
+                    .attr("class", "county")
+                    .attr('d', path)
+                    .attr('stroke', 'black') //enable/disable this with an option?
+                    .attr('stroke-width','.2px')
+                    .style('fill', function(d) {
+                        //data value
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        var value = data.get(d.id); 
+
+                        if(value) {
+                            return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
+                        } else {
+                            return '#ccc'; // return gray if no value
+                        }
+                    })
+                generate_tooltips()
+            }
+
+            // generate tooltips
+            function generate_tooltips() {
+                // add tooltips
+                // adapted from https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
+                data = this.data
+                var tooltip = svg.append("g");
+                // format = d => `${this.data == this.ump_data ? (parseFloat(d)).toFixed(2) : (parseFloat(d)*100).toFixed(2)}%`;
+                format = d => `${d}`
+            
+                svg
+                    .selectAll(".county") //select sections of path with county outline
+                    .on("touchmove mousemove", function(event, d) {
+                        tooltip_text(d,tooltip,data)
+                        tooltip.attr("transform", `translate(${d3.pointer(event, this)})`);
+                        d3.select(this)
+                        .attr("stroke", "red") //red outline of highlighted tooltip
+                        .raise();
+                    })
+                    .on("touchend mouseleave", function() {
+                        tooltip.call(callout, null);
+                        d3.select(this)
+                        .attr("stroke", 'black') // return to black outline
+                        .lower();
+                    });
+        
+            }
+
+            // add text to tool tips
+            function tooltip_text(d,tooltip,data) {
+                m = data.get(d.id)
+                if (m === undefined){
+                    tooltip.call(
+                    callout,
+                    `${var_name}: Not Available
+                ${d.properties.NAME}, ${states.get(d.id.slice(0, 2))}` //format of the tooltip
+                    )
+                } else {
+                    tooltip.call(
+                    callout,
+                    `${var_name}: ${format(m[this.period_selection])}
+                ${d.properties.NAME}, ${states.get(d.id.slice(0, 2))}` //format of the tooltip
+                    );
+                }
+            }
+
+            // NOT USED!!!!!!!!!!!!!!!!!!!!!!!
+            //set color
+            function set_color(color,min,max) {
+                this.color
+                    .range(color) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
+
+                //get min and max for setting color
+                this.color.domain([
+                    this.min,
+                    this.max
+                ]);
+            }
+        </script>
+
+        
+
+
+        <h1>County Data Project</h1>
+
+
+
+
+
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="./../js/nav/navbar-mini.js"></script>
+</body>
+</html>
