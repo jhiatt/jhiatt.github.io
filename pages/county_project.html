@@ -1,81 +1,103 @@
 <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <!--Import Google Icon Font-->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
 <!--       <link type="text/css" rel="stylesheet" href="../css/pages.css"  media="screen,projection"/>
- -->      
-      <title>D3 Test</title>
+-->      
+    <title>County Map Project</title>
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <link rel="shortcut icon" href="../images/bike-favicon.ico" type="image/x-icon">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="../images/bike-favicon.ico" type="image/x-icon">
 
-      <!-- link to d3 -->
-      <script type='text/javascript' src="../d3/d3.js"></script>
-      <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-      <script src="https://d3js.org/d3-collection.v1.min.js"></script>
-      <style>
-        .d3-tip {
-            line-height: 1;
-            padding: 12px;
-            background: rgba(43,43,43, 0.8);
-            color: #fff;
-            border-radius: 2px;
+    <!-- link to d3 -->
+    <script type='text/javascript' src="../d3/d3.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+
+    <style>
+        .set-data-button {
+            margin: 50px 5px 10px 5px;
         }
-      </style>
-    </head>
 
-    <body class="case-study">
-        <nav class="my-nav">
-            <span class="small-nav" id="hamburger">
-            <img src=".././images/hamburger-menue-icon.png" class=".small-nav" height="30" width="30" alt="">
-            </span>
-            <span class="big-nav" id="nav-span">
-            
-            <span class="nav-body">
-                <a href="./../index.html">Home</a>
-                <a href="mailto:jordanhiattcodes@gmail.com">Contact Me</a>
-                <a href="../images/jordan-resume DME.pdf" download>Resume</a>
+        h2 {
+            margin-top: 50px;
+        }
+        h3 {
+            margin-top: 40px;
+        }
+        .select-period{
+            font-size: large;
+            margin-top: 40px;
+        }
+        .center-img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        small{
+            display: block;
+            padding-bottom: 30px;
+        }
+        .container{
+            padding-bottom: 100px;
+        }
+    </style>
+</head>
 
-            </span>
-            <span class="nav-side">
-                <a href="https://github.com/jhiatt" target="_blank">
-                <img src="./../images/GitHub-logo-square.png" alt="Github Profile" height="30" width="30" />
-                </a>
-                <a href="https://www.linkedin.com/in/jordanhiatt/" target="_blank">
-                <img src="./../images/ln-black.png" alt="LinkedIn Profile" height="30" width="30" />
-                </a>
-                <a href="https://medium.com/@jhiatt" target="_blank">
-                <img src="./../images/medium-monogram.png" alt="Medium Blog" height="30" width="30" />
-                </a>
-        <!--             <a target="_blank" href="">Design Make Experiment</a>  -->          
-            </span>
-            </span>
-        </nav>
+<body class="case-study">
+    <nav class="my-nav">
+        <span class="small-nav" id="hamburger">
+        <img src=".././images/hamburger-menue-icon.png" class=".small-nav" height="30" width="30" alt="">
+        </span>
+        <span class="big-nav" id="nav-span">
+        
+        <span class="nav-body">
+            <a href="./../index.html">Home</a>
+            <a href="mailto:jordanhiattcodes@gmail.com">Contact Me</a>
+            <a href="../images/jordan-resume DME.pdf" download>Resume</a>
+
+        </span>
+        <span class="nav-side">
+            <a href="https://github.com/jhiatt" target="_blank">
+            <img src="./../images/GitHub-logo-square.png" alt="Github Profile" height="30" width="30" />
+            </a>
+            <a href="https://www.linkedin.com/in/jordanhiatt/" target="_blank">
+            <img src="./../images/ln-black.png" alt="LinkedIn Profile" height="30" width="30" />
+            </a>
+            <a href="https://medium.com/@jhiatt" target="_blank">
+            <img src="./../images/medium-monogram.png" alt="Medium Blog" height="30" width="30" />
+            </a>
+    <!--             <a target="_blank" href="">Design Make Experiment</a>  -->          
+        </span>
+        </span>
+    </nav>
 
 
-        <!-- NOTES:
-            - helpful article: https://observablehq.com/@d3/zoom-to-bounding-box 
-            - https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
-            - start local server: "python -m http.server 8888 &." launches http://localhost:8888/
-            - 
-        -->
-
-        <label for="period">Select Period: </label>
-        <select name="period" id="period" onchange="set_period()"></select>
-
-
+    <!-- NOTES:
+        - helpful article: https://observablehq.com/@d3/zoom-to-bounding-box 
+        - https://observablehq.com/@duynguyen1678/choropleth-with-tooltip
+        - start local server: "python -m http.server 8888 &." launches http://localhost:8888/
+        - 
+    -->
+    <div class="container">
+        
+        
         <div>
-            <button onclick="set_data('unp')">Unemployment Rate</button>
-            <button onclick="set_data('pol_r')">Presidential Republican Vote</button>
-            <button onclick="set_data('pol_d')">Presidential Democratic Vote</button>
-            <button onclick="set_data('pop')">Population Estimates</button>
+            <button class="set-data-button" onclick="set_data('unp')">Unemployment Rate</button>
+            <button class="set-data-button" onclick="set_data('pol_r')">Presidential Republican Vote</button>
+            <button class="set-data-button" onclick="set_data('pol_d')">Presidential Democratic Vote</button>
+            <button class="set-data-button" onclick="set_data('pop')">Population Estimates</button>
         </div>
-
+        
+        <div class="select-period">
+            <label for="period">Select Period: </label>
+            <select name="period" id="period" onchange="set_period()"></select>
+        </div>
 
 
         <script type='text/javascript'>
@@ -88,16 +110,16 @@
             
             // Projection
             var projection = d3.geoAlbersUsa()
-                               .translate([width/2, height/2]) //translate to move everything to the middle
+                                .translate([width/2, height/2]) //translate to move everything to the middle
             //    .scale([500]) //defalut scale for projection is 1000
             
             // Path
             var path = d3.geoPath()
-                         .projection(projection);
+                            .projection(projection);
             
 
             // Create SVG element
-            var svg = d3.select('body')
+            var svg = d3.select('.container')
                         .append('svg')
                         .attr("viewBox", [-margin, 0, width + margin, height + margin]);
 
@@ -138,17 +160,12 @@
             var pop_color = ['#ffffe5','#f7fcb9','#d9f0a3','#addd8e','#78c679','#41ab5d','#238443','#006837','#004529']; //https://colorbrewer2.org/#type=sequential&scheme=YlGn&n=9
 
 
-//                         // Color
-//                         var color = d3.scaleQuantize()
-//                           .range(up_color) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
-// // ['#f7fcfd','#e0ecf4','#bfd3e6','#9ebcda','#8c96c6','#8c6bb1','#88419d','#810f7c','#4d004b']
 
 
             // LOAD DATA
             // unemployment data
             d3.csv('https://raw.githubusercontent.com/jhiatt/county_data/main/cleaned_data/unemployment.csv').then(function(csv){
                 // load csv data
-                // console.log(csv)
 
                 // get min and max for color scale
                 this.up_min = d3.min(csv, function(d) { return d.Unemployment_rate}),
@@ -163,26 +180,20 @@
                     let fips = csv[i].fips;
                     if(this.ump_data.has(fips)) { // if fips is already in the map
                         obj = this.ump_data.get(fips)
-                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         obj[csv[i].Period]=csv[i].Unemployment_rate
                     } else { // first fips
-                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         this.ump_data.set(fips,{[csv[i].Period]: csv[i].Unemployment_rate})
                     }
                 }
 
                 this.data = this.ump_data
-                // console.log(this.data)
 
 
                 // PERIOD DROPDOWN
                 // rather than find the county with the most periods, I decided to stick with NYC's period selection.  My assumption is that a large city would be least likely to have missing monthly data. This could be a weakness down the road but seemed worth avoiding multiple large loops that would cost load time.
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 var unemp_county_sample = data.get('36061')
                 this.periods_all = Object.keys(unemp_county_sample)
                 create_period()
-
-                // console.log(data)
 
                 // state data
                 // var states = new Map()
@@ -199,7 +210,6 @@
                     // var counties
                     d3.json('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json').then(function(json) {
                         counties = json
-                        // console.log(counties)
 
                         generate_svg(data)
 
@@ -224,7 +234,6 @@
                         pol_data_r.set(fips,{[csv_elec[i].year]: csv_elec[i].republican_votes})
                     }
                 }
-                // console.log(pol_data_r)
 
                 // set up pol_data_d
                 for (var i=0; i<csv_elec.length; i++) {
@@ -238,7 +247,6 @@
                         pol_data_d.set(fips,{[csv_elec[i].year]: csv_elec[i].democrat_votes})
                     }
                 }
-                // console.log(pol_data_d)
 
                 var pol_county_sample = pol_data_r.get('36061')
                 this.pol_periods_all = Object.keys(pol_county_sample)
@@ -258,12 +266,6 @@
                 this.pol_min = rep_min < dem_min ? rep_min : dem_min;
                 // select larger value
                 this.pol_max = rep_max > dem_max ? rep_max : dem_max;
-                console.log(dem_min)
-                console.log(rep_min)
-                console.log(this.pol_min)
-                console.log(dem_max)
-                console.log(rep_max)
-                console.log(this.pol_max)
 
             })
 
@@ -285,7 +287,6 @@
                         2019: csv_pop[i].POPESTIMATE2019
                     })
                 }
-                console.log(pop_data)
                 var pop_county_sample = pop_data.get('36061')
                 this.pop_periods_all = Object.keys(pop_county_sample)
             })
@@ -372,7 +373,6 @@
                         var value = data.get(d.id); 
 
                         if(value) {
-                            // console.log(value[pd])
                             return color(value[pd]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
                         } else {
                             return '#ccc'; // return gray if no value
@@ -412,11 +412,9 @@
                     color.domain([0,500000]) // set min to 0 and max to 500,000 (any higher and everything is blank except LA and several cities)
                     this.var_name = 'Population'
                 }
-                console.log(this.period_selection)
                 
                 // create new dropdown list
                 create_period()
-                console.log(this.period_selection)
                 data = this.data
                 svg.selectAll('.county')
                 .style('fill', function(d) {
@@ -424,8 +422,6 @@
                     var value = data.get(d.id); 
                     
                     if(value) {
-                            // console.log(period_selection)
-                            // console.log(value[this.period_selection])
                             return color(value[period_selection]); // pulls the color for that value established by d3 with d3.scaleQuantize().domain
                     } else {
                         return '#ccc'; // return gray if no value
@@ -519,27 +515,166 @@
                 }
             }
 
-            // NOT USED!!!!!!!!!!!!!!!!!!!!!!!
-            //set color
-            function set_color(color,min,max) {
-                this.color
-                    .range(color) //thanks 'https://colorbrewer2.org/#type=sequential&scheme=PuBu&n=9'
-
-                //get min and max for setting color
-                this.color.domain([
-                    this.min,
-                    this.max
-                ]);
-            }
         </script>
 
         
+        <div class='col s12 center'>
 
-
-        <h1>County Data Project</h1>
-
-
-
+            
+            <h1>County Map Project</h1>
+            
+            <p>
+                In when designing data heavy plots, I like to think in terms of accuracy vs. honesty.  A plot can be 100% accurate without being honest and an honest graph must be both accurate and honest.  The classic example I think of is the classic US election map.
+            </p>
+            <img class='center-img' src='../images/ds-portfolio/abc-elect.jpg'>
+            <p>
+                <small>
+                    “Election 2020 Results and Live Updates.” ABC News, December 18, 2020. https://abcnews.go.com/Elections/2020-us-presidential-election-results-live-map/. 
+                </small>
+            </p>
+            <p>
+                At first glance, this map looks as if there is more red than blue and the republican candidate is in the lead.  However, most reputable news sources will place this map in context, as in this case where the electoral college totals and total popular vote amounts are displayed at the top of the page.
+            </p>
+            <p>
+                However, there is still a lot of information lacking in this map, particularly around how individuals voted.  Is it true that California received no Republican votes and Texas received no Democratic votes?  How come I read about republican congressmen from California in the news?  This map is accurate, but if we were to remove the context around it (or think about it in terms of popular support within a state), it would not feel honest.
+            </p>
+            <p>
+                Choropleth maps of the US often run into the issue of equating land size with population.  Showing total COVID-19 cases plotted on a map can lead to an assumption that some areas are less affected than others, though in reality they are just less populated.  Showing infection rates can help with that but hides the number of people infected.
+            </p>
+            <div style="width:100%; margin:0 auto;">
+                <img src='../images/ds-portfolio/covid-1.jpg'>
+                <img src='../images/ds-portfolio/covid-2.jpg'>
+            </div>
+            <p>
+                <small>“Coronavirus in the U.S.: Latest Map and Case Count.” The New York Times, January 26, 2021. https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html. </small>
+            </p>
+            <p>
+                While I did not find solutions to these problems, I sought to mitigate these issues by looking at the county-level rather than the state level and make an interactive plot with a variety of views to allow the user to explore.  This would give me a chance to dive into D3 (my first D3 project) and give me some practice manipulating data on the back end in python.  I found that there are advantages to using county data over state data, but most of the problems persist.  I detail my process and my findings below.
+            </p>
+            
+            <h2>
+                Gathering Data
+            </h2>
+            
+            <p>
+                I pulled data in unemployment data from the <a href=‘https://data.bls.gov/lausmap/showMap.jsp;jsessionid=130728D21177009D119C2F3F57220E2B._t3_07v’>Bureau of Labor Statistics</a>, population data from the <a href='https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/totals/) and election data from the MIT data lab (https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ'>US Census</a> and election data from the <a href='https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/VOQCHQ'>MIT Data Lab</a>.  County GeoJson data I got from <a href='https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json'>a Plotly blog</a>.
+            </p>
+            <p>
+                At first, I sought to do most of the work in python to minimize load time on the front end.  I created specialized functions that could take a variety of data sets and integrate them with GeoJson data.  However, the further I got into JavaScript the more I realized I could build a more streamlined solution easily in JavaScript with essentially any data source.
+            </p>
+            <p>
+                In python I ended up doing basic cleaning, prototyping with Plotly choropleth maps, and exporting csv data with a combined county and state FIPS number as the id.
+            </p>
+            <p>
+                I synched all of this code to GitHub where I would be able to access the raw csv data directly.
+            </p>
+            
+            
+            <h2>Creating the Choropleth Maps</h2>
+            
+            <p>
+                As this was my first D3.js project, I relied heavily on the book <a href='https://alignedleft.com/work/d3-book'>Interactive Data Visualization for the Web</a> by Scott Murray.
+            </p>
+            <p>
+                I used the d3.geoAlbersUsa projection (recommended in the book) and found a color scale at <a href='https://colorbrewer2.org/'>colorbrewer2.org</a>.
+            </p>
+            <p>
+                I then loaded in <a href='https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json'>county GeoJson data</a> from a <a href='https://plotly.com/python/choropleth-maps/'>Plotly tutorial</a>, and my unemployment data from python.
+            </p>
+            <p>
+                After creating a basic county choropleth map, I relied heavily on a blog by <a href="https://observablehq.com/@duynguyen1678/choropleth-with-tooltip">Duy Nguyen</a>.  Up until this point I had been creating a customized GeoJson file integrated with unemployment data for each county.  I then looped through the array of JS objects to generate the map with the attached data.  From this blog I realized I could instead store everything in JS Map objects and call the information I needed using the FIPS id’s and the instant loading magic of hash tables.  This saved the speed advantage of combining my data ahead of time but gave me much greater flexibility.  From there I created tool tips and had my first map more or less finished.
+            </p>
+            <p>
+                To create the option of switching to different maps, I moved the critical items to JavaScript state variables and created functions that would handle updating the values of those variables and updating the SVG maps.  To trigger these functions, I added “on-click” functions to the buttons.  The data for the other maps is loaded in parallel with the first map.
+            </p>
+            <p>
+                This solution was not particularly elegant and there is JavaScript code that can definitely be more “dry” and optimized for speed.  The goal for this project was to explore the concepts and create a workable prototype.  In a real environment, these plots would be integrated into an existing website and would likely be built to utilize the tools in that environment.  For instance, if I were adding this to a React.js app, we would build the whole think in components in a much cleaner fashion.
+            </p>
+            
+            <h3>
+                Future Improvements:
+            </h3>
+            <p>
+                If I were to spend more time on this project, there are a few areas of low hanging fruit to improve.
+            </p>
+            <ul>
+                <li>
+                    Load times are still slow for the first plot.  I load the unemployment data before loading the county GeoJson data and creating the SVG path.  This is so the data is available when the shading is done.  However, we already update shading when switching data sets, so we should be able to just load the unemployment data and draw the paths in parallel and add the shading immediately after, saving load time.
+                </li>
+                <li>
+                    Buttons to change data source should be hidden until the data is confirmed to be loaded.  Load times are so short that this shouldn’t be a problem unless the user has a slow connection.
+                </li>
+                <li>
+                    Add an option to view political data as either total votes or a percentage of voters that voted Republican/Democrat.  The data is available already.
+                </li>
+                <li>
+                    Add state lines and city markers for clarity.  Adding state lines would require adding the TopoJson library and knitting two paths together in the SVG map object.
+                </li>
+            </ul>
+            
+            <h2>
+                Conclusions on County Choropleth Maps
+            </h2>
+            
+            <p>
+                Overall, I found that there are some advantages to mapping county-level, rather than state-level data, but many of the disadvantages persist.  
+            </p>
+            
+            <h3>
+                Unemployment Data
+            </h3>
+            
+            <p>
+                Unemployment data was helped extremely by being at the county, rather than state-level.  When looking at broad trends like unemployment, county-level is often the most specific data available and looking at the most specific data you can gives you deeper insights.  Starting with “Feb-20” and moving on to each subsequent period paints a picture of how unemployment evolved through the pandemic.  Looking at some states like California you can see that the whole state was uniformly affected for several months, likely due to statewide policies, while Texas always had some bright spots and some darker spots.  Of course, this is an economic only picture and ignores any relevant public health data.
+            </p>
+            
+            <h3>
+                Population
+            </h3>
+            
+            <p>
+                Population estimate data was less helpful.  While obvious in hindsight, I did not anticipate the depth of the disparity between urban and rural counties.  Originally, I set the color range to have a low of the county with the smallest population and a high of the highest.  However, the resulting map was entirely white with the exception of LA and several other big cities which were the darkest green.  Of course, LA county has a population of around 10 million while some of the most remote counties have populations numbered in the low thousands.  I resisted a logarithmic scale, which is not intuitive, so the solution I was left with was to move the max value down to 500 thousand.  
+            </p>
+            <p>
+                This more or less destroys the intuitive nature of the plot that I am trying to protect.  While adding a legend would add clarity, a perfectly honest solution would successfully communicate the magnitude of the difference between population density.  An honest and accurate plot communicates a feeling of the magnitude of the difference in data backed by the power of accuracy.  
+            </p>
+            <p>
+                A better solution is reflected in the example below from the New York Times.
+            </p>
+                <img class='center-img' src='../images/ds-portfolio/elec-sq.jpg' width="50%">
+            <p>
+                <small>The Learning Network. “What’s Going On in This Graph? | 2020 Presidential Election Maps.” The New York Times, November 19, 2020. https://www.nytimes.com/2020/11/19/learning/whats-going-on-in-this-graph-2020-presidential-election-maps.html. </small>
+            </p>
+            <p>
+                Here, the state sizes are scaled by the number of electoral votes they have, which is the core data they are trying to communicate.  This way each state is communicating two sets of data, the color, indicating the direction they voted, and the size, indicating the number of votes.  
+            </p>
+            <p>
+                I would prefer not having a separate population map to reference.  Instead, I would love to scale each county to reflect its population, increasing the size of heavily populated counties and shrinking the size of rural counties.  This would be a huge technical and design challenge: calculating the area of each county, determining a scale factor, and determining a new arrangement of scaled counties.  Of course, this would result in some counties being thousands of times larger than other counties, which would in itself be difficult to display.  This would be a gratifying creative challenge in the future.
+            </p>
+            
+            <h3>
+                Political Data
+            </h3>
+            <p>
+                My goal for this data was to show how individuals voted in races for president.  Most election result maps correctly focus on electoral votes; however, if we are focused on county data we are telling the story of how more narrow regions voted rather than entire states.
+            </p>
+            <p>
+                At first, I mapped political data by the rate each county voted for the republican or democratic candidate.  However, this was not a very honest solution as the number of counties skew Republican, but the population skews Democratic, in the most recent elections.
+            </p>
+            <p>
+                I ended up mapping total numbers of votes per county.  This approach focuses on how individuals in a given area voted, regardless of how their state voted as a whole.  The downside is you will need to look at the Republican map, the Democratic map, and the Population map to get any sense of a percentage that voted Democratic, Republican, or not at all.
+            </p>
+            <p>
+                These downsides notwithstanding, there is a lot we can learn from these maps.  A large number of Republicans vote in California and a large number of Democrats vote in Texas.  This is a narrative that we often ignore but is very obvious looking at these maps.  Moving between periods you also get a very interesting picture of the shift in turnout from election to election.
+            </p>
+            <br>
+                There is a lot of power in changing the approach to which you view data.  Choosing to view information at a state level vs a county level is just one of any number of decisions you make when visualizing data.  Exploring the impact of these decisions will lead us all to make more honest representations of data while retaining the highest level of accuracy.
+            <p>
+                
+        </div>
+    </div>  
+                
+                
 
 
 <!--Import jQuery before materialize.js-->
